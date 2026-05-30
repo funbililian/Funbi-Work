@@ -42,7 +42,7 @@ Taxease-Verify-email-Page/
 ├── script.js
 |
 ├── images/
-│   ├──https://res.cloudinary.com/dmtbsxz67/image/upload/v1780010677/Screenshot_20260528_235724_Figma_zqpyn9.jpg
+│   └──https://res.cloudinary.com/dmtbsxz67/image/upload/v1780010677/Screenshot_20260528_235724_Figma_zqpyn9.jpg
 
 
 Profile
@@ -55,10 +55,8 @@ Taxease-Profile-Page/
 |
 ├── images/
 │   ├──https://res.cloudinary.com/dmtbsxz67/image/upload/v1780149393/0x0_td93hs.webp"
-|
-├──https://res.cloudinary.com/dmtbsxz67/image/upload/v1780149393/human-resources-portrait-black-man-600nw-2723721801_ie8p6l.webp" 
-|
-├── https://res.cloudinary.com/dmtbsxz67/image/upload/v1780149188/freelancers-nigeria_zu6wn8.webp"
+|   ├──https://res.cloudinary.com/dmtbsxz67/image/upload/v1780149393/human-resources-portrait-black-man-600nw-2723721801_ie8p6l.webp" 
+|   └── https://res.cloudinary.com/dmtbsxz67/image/upload/v1780149188/freelancers-nigeria_zu6wn8.webp"
 
 Taxease-Details-Page/
 │
