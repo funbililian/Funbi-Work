@@ -39,3 +39,5 @@ Taxease-Verify-email-Page/
 ├── style.css
 ├── script.js
 |
+├── images/
+│   ├──https://res.cloudinary.com/dmtbsxz67/image/upload/v1780010677/Screenshot_20260528_235724_Figma_zqpyn9.jpg
