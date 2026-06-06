@@ -1,0 +1,236 @@
+/* =====================
+   Base Reset & Variables
+   ===================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-bg: #f4f4f4;
+  --color-surface: #ffffff;
+  --color-border: #e2e2e2;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #555555;
+  --color-dot: #000000;
+  --color-dot-active: #026805;
+  --color-icon: #028a07;
+  --color-answer-text: #555555;
+  --color-section-heading: #026807;
+  --font-main: 'Poppins', sans-serif;
+  --radius: 10px;
+  --transition: 0.28s ease;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* =====================
+   Wrapper
+   ===================== */
+.faq-wrapper {
+  background: var(--color-surface);
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  border-radius: var(--radius);
+  padding: 2rem 1.5rem 2.5rem;
+ box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+}
+
+/* =====================
+   Page Title
+   ===================== */
+.faq-title {
+  font-family: var(--font-main);
+  font-size: 1.55rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text-primary);
+  padding-bottom: 1.25rem;
+  border-bottom: 1.5px solid var(--color-border);
+  margin-bottom: 0;
+}
+
+/* =====================
+   Section Group
+   ===================== */
+.faq-section {
+  margin-top: 1.75rem;
+}
+
+/* =====================
+   Section Heading
+   ===================== */
+.faq-section-heading {
+  font-family: var(--font-main);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-section-heading);
+  padding-bottom: 0.75rem;
+  border-bottom: 1.5px solid var(--color-border);
+  margin-bottom: 0.25rem;
+}
+
+/* =====================
+   FAQ Item
+   ===================== */
+.faq-item {
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* =====================
+   Question Button
+   ===================== */
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.9rem 0.25rem;
+  text-align: left;
+  color: var(--color-text-primary);
+  font-family: var(--font-main);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+  transition: background var(--transition);
+}
+
+.faq-question:hover {
+  background: #fafafa;
+}
+
+.faq-question:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Dot indicator */
+.faq-dot {
+  flex-shrink: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-dot);
+  transition: background-color var(--transition), transform var(--transition);
+}
+
+.faq-item.open .faq-dot {
+  background-color: var(--color-dot-active);
+  transform: scale(1.2);
+}
+
+/* Question text */
+.faq-text {
+  flex: 1;
+}
+
+/* Chevron icon */
+.faq-icon {
+  flex-shrink: 0;
+  font-size: 0.65rem;
+  color: var(--color-icon);
+  transition: transform var(--transition);
+  line-height: 1;
+}
+
+.faq-item.open .faq-icon {
+  transform: rotate(180deg);
+}
+
+/* =====================
+   Answer Panel
+   ===================== */
+.faq-answer {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height var(--transition);
+}
+
+.faq-answer p {
+  font-family: var(--font-main);
+  font-size: 0.85rem;
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--color-answer-text);
+  padding: 0 0.25rem 1rem 20px;
+}
+
+.faq-item.open .faq-answer {
+  max-height: 300px;
+}
+
+/* =====================
+   Tablet / Desktop (≥ 640px)
+   ===================== */
+@media (min-width: 640px) {
+  body {
+    padding: 3rem 2rem;
+  }
+
+  .faq-wrapper {
+    padding: 2.5rem 2.5rem 3rem;
+  }
+
+  .faq-title {
+    font-size: 1.8rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .faq-section-heading {
+    font-size: 1.1rem;
+    padding-bottom: 0.85rem;
+  }
+
+  .faq-question {
+    font-size: 0.925rem;
+    padding: 1rem 0.5rem;
+    gap: 14px;
+  }
+
+  .faq-answer p {
+    font-size: 0.9rem;
+    padding: 0 0.5rem 1.1rem 22px;
+  }
+
+  .faq-dot {
+    width: 9px;
+    height: 9px;
+  }
+}
+
+/* =====================
+   Large Desktop (≥ 1024px)
+   ===================== */
+@media (min-width: 1024px) {
+  .faq-wrapper {
+    padding: 3rem 3rem 3.5rem;
+  }
+
+  .faq-title {
+    font-size: 2rem;
+  }
+
+  .faq-section-heading {
+    font-size: 1.15rem;
+  }
+
+  .faq-question {
+    font-size: 0.95rem;
+  }
+
+  .faq-answer p {
+    font-size: 0.925rem;
+  }
+}

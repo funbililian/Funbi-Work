@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Batch Payroll Calculator
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="payroll.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- HEADER -->
+
+        <header>
+
+            <h1>
+                Batch Payroll Calculator
+            </h1>
+
+            <p>
+                Upload employee payroll data and calculate PAYE taxes automatically.
+            </p>
+
+        </header>
+
+        <!-- COMPANY DETAILS -->
+
+        <section class="card">
+
+            <h2>
+                Company Information
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Company Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="companyName">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        CAC Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cacNumber">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Payroll Month
+                    </label>
+
+                    <input
+                        type="month"
+                        id="payrollMonth">
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CSV UPLOAD -->
+
+        <section class="card">
+
+            <h2>
+                Upload Employee CSV
+            </h2>
+
+            <p class="helper-text">
+
+                Accepted format:
+                .csv only
+
+            </p>
+
+            <input
+                type="file"
+                id="csvFile"
+                accept=".csv">
+
+            <button
+                id="uploadBtn"
+                class="primary-btn">
+
+                Upload CSV
+
+            </button>
+
+        </section>
+
+        <!-- PAYROLL SUMMARY -->
+
+        <section class="card">
+
+            <h2>
+                Payroll Summary
+            </h2>
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+
+                    <span>
+                        Employees
+                    </span>
+
+                    <h3 id="employeeCount">
+                        0
+                    </h3>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <span>
+                        Total Gross Income
+                    </span>
+
+                    <h3 id="totalGross">
+                        ₦0
+                    </h3>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <span>
+                        Total PAYE
+                    </span>
+
+                    <h3 id="totalTax">
+                        ₦0
+                    </h3>
+
+                </div>
+
+                <div class="summary-card">
+
+                    <span>
+                        Total Net Income
+                    </span>
+
+                    <h3 id="totalNet">
+                        ₦0
+                    </h3>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ACTION BUTTONS -->
+
+        <section class="card action-card">
+
+            <button
+                id="calculatePayrollBtn"
+                class="primary-btn">
+
+                Calculate Payroll
+
+            </button>
+
+            <button
+                id="exportCsvBtn"
+                class="secondary-btn">
+
+                Export CSV Report
+
+            </button>
+
+            <button
+                id="exportPdfBtn"
+                class="secondary-btn">
+
+                Export PDF Summary
+
+            </button>
+
+        </section>
+
+        <!-- CHARTS -->
+
+        <section class="card">
+
+            <h2>
+                Payroll Analytics
+            </h2>
+
+            <div class="chart-grid">
+
+                <div class="chart-box">
+
+                    <canvas
+                        id="payrollPieChart">
+                    </canvas>
+
+                </div>
+
+                <div class="chart-box">
+
+                    <canvas
+                        id="payrollBarChart">
+                    </canvas>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- EMPLOYEE TABLE -->
+
+        <section class="card">
+
+            <h2>
+                Employee Payroll Records
+            </h2>
+
+            <div class="table-wrapper">
+
+                <table
+                    id="employeeTable">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Employee Name
+                            </th>
+
+                            <th>
+                                TIN
+                            </th>
+
+                            <th>
+                                Gross Income
+                            </th>
+
+                            <th>
+                                Pension
+                            </th>
+
+                            <th>
+                                PAYE
+                            </th>
+
+                            <th>
+                                Net Income
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="tableBody">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+        <!-- SAMPLE CSV FORMAT -->
+
+        <section class="card">
+
+            <h2>
+                Expected CSV Format
+            </h2>
+
+<pre>
+Employee Name,TIN,Gross Income,NHF,NHIS,Life Insurance,Mortgage Interest,Rent
+John Doe,TIN12345,300000,5000,3000,2000,0,1200000
+Jane Smith,TIN54321,450000,7500,3000,2000,0,1800000
+</pre>
+
+        </section>
+
+    </div>
+
+    <script src="payroll.js"></script>
+
+</body>
+
+</html>

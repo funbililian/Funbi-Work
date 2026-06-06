@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="forgotpassword.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+
+        <div class="forgot-card">
+<div class="logo-area">
+
+          <img src="https://res.cloudinary.com/dmtbsxz67/image/upload/v1780010677/Screenshot_20260528_235724_Figma_zqpyn9.jpg" alt="Logo">
+
+          <h1>Taxease</h1>
+
+        </div>
+            <h1>Forgot Password</h1>
+
+            <p>
+                Enter the email address associated with
+                your Taxease account
+            </p>
+
+            <form id="resetForm">
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email Address"
+                    required
+                >
+
+                <button type="submit" class="btn-primary">
+                    Send Reset Link
+                </button>
+
+                <a href="#" class="btn-secondary">
+                    Back To Log In
+                </a>
+            </form>
+
+            <div id="message"></div>
+        </div>
+    </div>
+
+    <script src="forgotpassword.js"></script>
+
+</body>
+</html>

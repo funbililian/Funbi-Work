@@ -1,0 +1,258 @@
+/* ==========================
+   GLOBAL
+========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#F5F7FA;
+    color:#1F2937;
+    line-height:1.6;
+}
+
+.container{
+    max-width:1400px;
+    margin:auto;
+    padding:30px;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+header{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+header h1{
+    font-size:42px;
+    color:#028A07;
+    margin-bottom:10px;
+}
+
+header p{
+    color:#6B7280;
+    font-size:16px;
+}
+
+/* ==========================
+   CARDS
+========================== */
+
+.card{
+    background:#ffffff;
+    padding:25px;
+    border-radius:24px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.08);
+}
+
+.card h2{
+    margin-bottom:20px;
+    color:#1F2937;
+}
+
+/* ==========================
+   FORM GRID
+========================== */
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+}
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.form-group label{
+    font-weight:600;
+    margin-bottom:8px;
+}
+
+.form-group input,
+.form-group select{
+    padding:14px;
+    border:1px solid #D1D5DB;
+    border-radius:12px;
+    font-size:15px;
+    transition:0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus{
+    outline:none;
+    border-color:#028A07;
+    box-shadow:0 0 0 3px rgba(2,138,7,0.15);
+}
+
+/* ==========================
+   BUTTONS
+========================== */
+
+.primary-btn,
+.secondary-btn{
+    border:none;
+    cursor:pointer;
+    padding:15px 25px;
+    border-radius:12px;
+    font-size:15px;
+    font-weight:600;
+    transition:0.3s;
+}
+
+.primary-btn{
+    background:#028A07;
+    color:white;
+}
+
+.primary-btn:hover{
+    background:#026805;
+}
+
+.secondary-btn{
+    background:#1F2937;
+    color:white;
+}
+
+.secondary-btn:hover{
+    opacity:0.9;
+}
+
+/* ==========================
+   SUMMARY CARDS
+========================== */
+
+.summary-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.summary-card{
+    background:#F9FAFB;
+    border-radius:18px;
+    padding:25px;
+    transition:0.3s;
+}
+
+.summary-card:hover{
+    transform:translateY(-3px);
+}
+
+.summary-card span{
+    color:#6B7280;
+    display:block;
+    margin-bottom:10px;
+}
+
+.summary-card h3{
+    font-size:28px;
+    color:#028A07;
+}
+
+/* ==========================
+   CHARTS
+========================== */
+
+.chart-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:25px;
+}
+
+.chart-box{
+    background:#F9FAFB;
+    padding:20px;
+    border-radius:18px;
+}
+
+.chart-box canvas{
+    width:100% !important;
+    height:350px !important;
+}
+
+/* ==========================
+   TABLE
+========================== */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:#F3F4F6;
+}
+
+th{
+    text-align:left;
+    padding:15px;
+    font-weight:600;
+}
+
+td{
+    padding:15px;
+    border-bottom:1px solid #E5E7EB;
+}
+
+tbody tr:hover{
+    background:#F9FAFB;
+}
+
+/* ==========================
+   BUSINESS SECTION
+========================== */
+
+#businessSection{
+    border-left:5px solid #028A07;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media(max-width:992px){
+
+    .chart-grid{
+        grid-template-columns:1fr;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .container{
+        padding:20px;
+    }
+
+    header h1{
+        font-size:32px;
+    }
+
+    .primary-btn,
+    .secondary-btn{
+        width:100%;
+    }
+
+}
+
+@media(max-width:480px){
+
+    header h1{
+        font-size:28px;
+    }
+
+    .summary-card h3{
+        font-size:22px;
+    }
+
+}

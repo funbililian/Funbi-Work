@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Taxease Tax Calculator
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="calculator.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+
+            <h1>
+                Taxease Tax Calculator
+            </h1>
+
+            <p>
+                Calculate PAYE tax using the updated Nigerian tax methodology.
+            </p>
+
+        </header>
+
+        <!-- PERSONAL INFORMATION -->
+
+        <section class="card">
+
+            <h2>
+                Personal Information
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fullName">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        TIN
+                    </label>
+
+                    <input
+                        type="text"
+                        id="tin">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Profile Type
+                    </label>
+
+                    <select id="profileType">
+
+                        <option>
+                            Employee
+                        </option>
+
+                        <option>
+                            Freelancer
+                        </option>
+
+                        <option>
+                            Business Owner
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- TAX INFORMATION -->
+
+        <section class="card">
+
+            <h2>
+                Tax Information
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Gross Monthly Income (₦)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="grossIncome">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Annual Rent (₦)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="annualRent">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        NHF Contribution (Monthly)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="nhf">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        NHIS Contribution (Monthly)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="nhis">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Life Insurance (Monthly)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="lifeInsurance">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Mortgage Interest (Monthly)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="mortgageInterest">
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- BUSINESS OWNER SECTION -->
+
+        <section
+            id="businessSection"
+            class="card"
+            style="display:none;">
+
+            <h2>
+                Business Information
+            </h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Business Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="businessName">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        CAC Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="cacNumber">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Annual Revenue (₦)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="annualRevenue">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Annual Expenses (₦)
+                    </label>
+
+                    <input
+                        type="number"
+                        id="annualExpenses">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+                        Employee Count
+                    </label>
+
+                    <input
+                        type="number"
+                        id="employeeCount">
+
+                </div>
+
+            </div>
+
+            <button
+                id="batchPayrollBtn"
+                class="secondary-btn">
+
+                Open Batch Payroll Module
+
+            </button>
+
+        </section>
+
+        <!-- ACTION -->
+
+        <section class="card">
+
+            <button
+                id="calculateBtn"
+                class="primary-btn">
+
+                Calculate Tax
+
+            </button>
+
+        </section>
+
+        <!-- MONTHLY SUMMARY -->
+
+        <section class="card">
+
+            <h2>
+                Monthly Summary
+            </h2>
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+                    <span>Gross Income</span>
+                    <h3 id="monthlyGross">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>Pension</span>
+                    <h3 id="monthlyPension">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>Rent Relief</span>
+                    <h3 id="monthlyRentRelief">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>PAYE</span>
+                    <h3 id="monthlyPAYE">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>Net Income</span>
+                    <h3 id="monthlyNet">₦0</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- ANNUAL SUMMARY -->
+
+        <section class="card">
+
+            <h2>
+                Annual Summary
+            </h2>
+
+            <div class="summary-grid">
+
+                <div class="summary-card">
+                    <span>Gross Income</span>
+                    <h3 id="annualGross">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>Pension</span>
+                    <h3 id="annualPension">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>Rent Relief</span>
+                    <h3 id="annualRentRelief">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>PAYE</span>
+                    <h3 id="annualPAYE">₦0</h3>
+                </div>
+
+                <div class="summary-card">
+                    <span>Net Income</span>
+                    <h3 id="annualNet">₦0</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- CHARTS -->
+
+        <section class="card">
+
+            <h2>
+                Tax Analytics
+            </h2>
+
+            <div class="chart-grid">
+
+                <div class="chart-box">
+                    <canvas id="taxPieChart"></canvas>
+                </div>
+
+                <div class="chart-box">
+                    <canvas id="incomeBarChart"></canvas>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- BREAKDOWN TABLE -->
+
+        <section class="card">
+
+            <h2>
+                Tax Breakdown
+            </h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Description
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>Gross Income</td>
+                        <td id="grossBreakdown">₦0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Pension</td>
+                        <td id="pensionBreakdown">₦0</td>
+                    </tr>
+
+                    <tr>
+                        <td>NHF</td>
+                        <td id="nhfBreakdown">₦0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Rent Relief</td>
+                        <td id="rentReliefBreakdown">₦0</td>
+                    </tr>
+
+                    <tr>
+                        <td>PAYE Tax</td>
+                        <td id="taxBreakdown">₦0</td>
+                    </tr>
+
+                    <tr>
+                        <td>Net Income</td>
+                        <td id="netBreakdown">₦0</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+    </div>
+
+    <script src="calculator.js"></script>
+
+</body>
+
+</html>
