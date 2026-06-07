@@ -64,6 +64,26 @@ body{
 .export-btn:hover{
     opacity:0.9;
 }
+.history-btn {
+    background-color: #ffffff;
+    color: #028a07;
+    border: 2px solid #028a07;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.history-btn:hover {
+    background-color: #028a07;
+    color: #ffffff;
+}
+
+.history-btn:active {
+    transform: scale(0.98);
+}
 
 .card{
     background:white;

@@ -190,7 +190,7 @@ GOOGLE BUTTON
 }
 /* BUTTON */
 
-.register-btn{
+.signin-btn{
   width:100%;
   padding:18px;
   border:none;
@@ -204,7 +204,7 @@ GOOGLE BUTTON
   margin-top:10px;
 }
 
-.register-btn:hover{
+.signin-btn:hover{
   background:#026805;
 }
 

@@ -380,5 +380,14 @@ Net Income:
     "Taxease_Report.txt";
 
     link.click();
+});
 
+// =============================
+// PAYMENT HISTORY BUTTON
+// =============================
+
+document
+.querySelector("#paymentHistoryBtn")
+.addEventListener("click", function () {
+    window.location.href = "/history/index.html";
 });

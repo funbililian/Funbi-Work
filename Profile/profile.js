@@ -1,18 +1,17 @@
 function selectProfile(type){
 
-    alert(type + " Profile Selected");
 
     // Redirect example
 
     if(type === "Individual"){
 
-        window.location.href = "individual-dashboard.html";
+        window.location.href = "/details/index.html";
 
     }
 
     if(type === "Business"){
 
-        window.location.href = "business-dashboard.html";
+        window.location.href = "/details/index.html";
 
     }
 

@@ -133,7 +133,7 @@ form h2{
   color:#008000;
   text-decoration:none;
 }
-.Login-btn{
+.login-btn{
   width:100%;
   padding:18px;
   border:none;
@@ -147,7 +147,7 @@ form h2{
   margin-top:10px;
 }
 
-.Login-btn:hover{
+.login-btn:hover{
   background:#026805;
 }
 .signup-text{

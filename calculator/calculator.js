@@ -58,8 +58,16 @@ batchPayrollBtn.addEventListener(
     () => {
 
         window.location.href =
-        "payroll.html";
+        "/payroll/index.html";
 
+    }
+);
+
+makePaymentBtn.addEventListener(
+    "click", 
+    () => {
+        
+        window.location.href = "/payment/index.html";
     }
 );
 
@@ -593,5 +601,4 @@ function calculateTax(){
             userData
         )
     );
-
 }

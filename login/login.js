@@ -1,4 +1,4 @@
-const Log-inForm = document.getElementById("Log-inForm");
+const loginForm = document.getElementById("Log-inForm");
 const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const rememberMe = document.getElementById("rememberMe");
@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
     }
 });
 
-Log-inForm.addEventListener("submit", function (event) {
+loginForm.addEventListener("submit", function (event) {
     event.preventDefault();
 
     const email = emailInput.value.trim();
@@ -59,7 +59,7 @@ Log-inForm.addEventListener("submit", function (event) {
         alert("Login successful!");
 
         // Redirect to dashboard
-        window.location.href = "dashboard.html";
+        window.location.href ="/dashboard/index.html";
     } else {
         alert("Invalid email or password.");
     }

@@ -127,6 +127,26 @@ header p{
     opacity:0.9;
 }
 
+.payment-btn {
+    background-color: #028a07;
+    color: #ffffff;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.payment-btn:hover {
+    background-color: #026805;
+}
+
+.payment-btn:active {
+    transform: scale(0.98);
+}
+
 /* ==========================
    SUMMARY CARDS
 ========================== */
