@@ -1,393 +1,243 @@
+const API_BASE = "https://tax-system-backend.onrender.com/api";
+
 // =============================
-// LOAD USER DATA FROM LOCALSTORAGE
+// STATE
 // =============================
 
-let user = JSON.parse(
-    localStorage.getItem("taxeaseUser")
-);
+let user = null;
 
-// Demo data if none exists
+// =============================
+// FETCH CURRENT USER (YOU NEED BACKEND ENDPOINT)
+// =============================
 
-if (!user) {
+async function loadUserProfile() {
+    try {
+        const res = await fetch(`${API_BASE}/auth/me`, {
+            method: "GET",
+            credentials: "include"
+        });
 
-    user = {
+        if (!res.ok) throw new Error("Failed to load user");
 
-        name: "John Doe",
+        const data = await res.json();
+        user = data.data;
 
-        email: "john@example.com",
+    } catch (error) {
+        console.error(error);
 
-        profileType: "Employee",
-
-        tin: "TIN123456",
-
-        companyName: "ABC Limited",
-
-        jobTitle: "Software Developer",
-
-        grossIncome: 300000,
-
-        payeTax: 45000,
-
-        pension: 15000,
-
-        nhf: 5000,
-
-        deductions: 20000,
-
-        netIncome: 235000,
-
-        taxHistory: [
-            {
-                month: "January",
-                income: 300000,
-                tax: 45000,
-                netIncome: 235000
-            },
-            {
-                month: "February",
-                income: 320000,
-                tax: 47000,
-                netIncome: 253000
-            }
-        ]
-
-    };
-
+        // fallback demo user
+        user = {
+            name: "Demo User",
+            email: "demo@example.com",
+            profileType: "Employee",
+            tin: "N/A",
+            grossIncome: 0,
+            payeTax: 0,
+            pension: 0,
+            nhf: 0,
+            deductions: 0,
+            netIncome: 0
+        };
+    }
 }
 
 // =============================
-// PROFILE DETAILS
+// FETCH TAX HISTORY (REAL API)
 // =============================
 
-document.getElementById("userName").textContent =
-user.name || "N/A";
+async function loadTaxHistory() {
+    try {
+        const res = await fetch(`${API_BASE}/payroll/uploads`, {
+            method: "GET",
+            credentials: "include"
+        });
 
-document.getElementById("userEmail").textContent =
-user.email || "N/A";
+        const data = await res.json();
 
-document.getElementById("profileType").textContent =
-user.profileType || "N/A";
+        if (!res.ok) throw new Error(data.message);
 
-document.getElementById("tin").textContent =
-user.tin || "N/A";
+        return data.data;
 
-// =============================
-// DYNAMIC PROFILE SECTION
-// =============================
-
-const dynamicProfile =
-document.getElementById("dynamicProfile");
-
-if(user.profileType === "Employee"){
-
-    dynamicProfile.innerHTML = `
-
-        <div class="dynamic-grid">
-
-            <div>
-                <span>Company Name</span>
-                <h3>${user.companyName || "-"}</h3>
-            </div>
-
-            <div>
-                <span>Job Title</span>
-                <h3>${user.jobTitle || "-"}</h3>
-            </div>
-
-            <div>
-                <span>Monthly Salary</span>
-                <h3>₦${(user.grossIncome || 0).toLocaleString()}</h3>
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-else if(user.profileType === "Freelancer"){
-
-    dynamicProfile.innerHTML = `
-
-        <div class="dynamic-grid">
-
-            <div>
-                <span>Profession</span>
-                <h3>${user.profession || "-"}</h3>
-            </div>
-
-            <div>
-                <span>Monthly Income</span>
-                <h3>₦${(user.grossIncome || 0).toLocaleString()}</h3>
-            </div>
-
-            <div>
-                <span>Years of Experience</span>
-                <h3>${user.experience || "-"}</h3>
-            </div>
-
-        </div>
-
-    `;
-
-}
-
-else if(user.profileType === "Business Owner"){
-
-    dynamicProfile.innerHTML = `
-
-        <div class="dynamic-grid">
-
-            <div>
-                <span>Business Name</span>
-                <h3>${user.businessName || "-"}</h3>
-            </div>
-
-            <div>
-                <span>CAC Number</span>
-                <h3>${user.cacNumber || "-"}</h3>
-            </div>
-
-            <div>
-                <span>Monthly Revenue</span>
-                <h3>₦${(user.grossIncome || 0).toLocaleString()}</h3>
-            </div>
-
-        </div>
-
-    `;
-
+    } catch (error) {
+        console.error("History error:", error);
+        return [];
+    }
 }
 
 // =============================
-// TAX SUMMARY CARDS
+// RENDER PROFILE
 // =============================
 
-document.getElementById("grossIncome")
-.textContent =
-"₦" +
-(user.grossIncome || 0)
-.toLocaleString();
+function renderProfile() {
 
-document.getElementById("payeTax")
-.textContent =
-"₦" +
-(user.payeTax || 0)
-.toLocaleString();
+    document.getElementById("userName").textContent = user.name || "N/A";
+    document.getElementById("userEmail").textContent = user.email || "N/A";
+    document.getElementById("profileType").textContent = user.profileType || "N/A";
+    document.getElementById("tin").textContent = user.tin || "N/A";
 
-document.getElementById("deductions")
-.textContent =
-"₦" +
-(user.deductions || 0)
-.toLocaleString();
+    const dynamicProfile = document.getElementById("dynamicProfile");
 
-document.getElementById("netIncome")
-.textContent =
-"₦" +
-(user.netIncome || 0)
-.toLocaleString();
+    if (user.profileType === "Employee") {
+        dynamicProfile.innerHTML = `
+            <div class="dynamic-grid">
+                <div><span>Company</span><h3>${user.companyName || "-"}</h3></div>
+                <div><span>Job Title</span><h3>${user.jobTitle || "-"}</h3></div>
+                <div><span>Salary</span><h3>₦${(user.grossIncome || 0).toLocaleString()}</h3></div>
+            </div>
+        `;
+    }
+
+    else if (user.profileType === "Freelancer") {
+        dynamicProfile.innerHTML = `
+            <div class="dynamic-grid">
+                <div><span>Profession</span><h3>${user.profession || "-"}</h3></div>
+                <div><span>Income</span><h3>₦${(user.grossIncome || 0).toLocaleString()}</h3></div>
+                <div><span>Experience</span><h3>${user.experience || "-"}</h3></div>
+            </div>
+        `;
+    }
+
+    else if (user.profileType === "Business Owner") {
+        dynamicProfile.innerHTML = `
+            <div class="dynamic-grid">
+                <div><span>Business</span><h3>${user.businessName || "-"}</h3></div>
+                <div><span>CAC</span><h3>${user.cacNumber || "-"}</h3></div>
+                <div><span>Revenue</span><h3>₦${(user.grossIncome || 0).toLocaleString()}</h3></div>
+            </div>
+        `;
+    }
+}
 
 // =============================
-// TAX HISTORY TABLE
+// TAX CARDS
 // =============================
 
-const historyTable =
-document.getElementById("historyTable");
+function renderCards() {
+    document.getElementById("grossIncome").textContent = "₦" + (user.grossIncome || 0).toLocaleString();
+    document.getElementById("payeTax").textContent = "₦" + (user.payeTax || 0).toLocaleString();
+    document.getElementById("deductions").textContent = "₦" + (user.deductions || 0).toLocaleString();
+    document.getElementById("netIncome").textContent = "₦" + (user.netIncome || 0).toLocaleString();
+}
 
-if(user.taxHistory){
+// =============================
+// TAX HISTORY TABLE (REAL API)
+// =============================
 
-    user.taxHistory.forEach(item => {
+async function renderHistory() {
 
-        historyTable.innerHTML += `
+    const history = await loadTaxHistory();
 
+    const table = document.getElementById("historyTable");
+
+    table.innerHTML = "";
+
+    history.forEach(item => {
+
+        table.innerHTML += `
             <tr>
-
-                <td>${item.month}</td>
-
-                <td>
-                    ₦${item.income.toLocaleString()}
-                </td>
-
-                <td>
-                    ₦${item.tax.toLocaleString()}
-                </td>
-
-                <td>
-                    ₦${item.netIncome.toLocaleString()}
-                </td>
-
+                <td>${new Date(item.createdAt).toDateString()}</td>
+                <td>₦${item.result.grossSalary?.toLocaleString() || 0}</td>
+                <td>₦${item.result.annualTax?.toLocaleString() || 0}</td>
+                <td>₦${item.result.netSalary?.toLocaleString() || 0}</td>
             </tr>
-
         `;
 
     });
-
 }
 
 // =============================
-// PIE CHART
+// CHARTS (REAL DATA)
 // =============================
 
-new Chart(
-    document.getElementById("pieChart"),
-    {
+function renderCharts() {
+
+    new Chart(document.getElementById("pieChart"), {
         type: "pie",
-
         data: {
-
-            labels: [
-                "PAYE Tax",
-                "Pension",
-                "NHF",
-                "Net Income"
-            ],
-
+            labels: ["Tax", "Pension", "NHF", "Net"],
             datasets: [{
-
                 data: [
-
                     user.payeTax || 0,
                     user.pension || 0,
                     user.nhf || 0,
                     user.netIncome || 0
-
-                ],
-
-                backgroundColor: [
-
-                    "#028A07",
-                    "#026805",
-                    "#6B7280",
-                    "#1F2937"
-
                 ]
-
             }]
         }
-    }
-);
+    });
 
-// =============================
-// BAR CHART
-// =============================
-
-new Chart(
-    document.getElementById("barChart"),
-    {
-
+    new Chart(document.getElementById("barChart"), {
         type: "bar",
-
         data: {
-
-            labels: [
-                "Income",
-                "PAYE",
-                "Pension",
-                "NHF",
-                "Net"
-            ],
-
+            labels: ["Income", "Tax", "Pension", "NHF", "Net"],
             datasets: [{
-
-                label: "Amount (₦)",
-
                 data: [
-
                     user.grossIncome || 0,
                     user.payeTax || 0,
                     user.pension || 0,
                     user.nhf || 0,
                     user.netIncome || 0
-
-                ],
-
-                backgroundColor: "#028A07"
-
+                ]
             }]
-
-        },
-
-        options: {
-
-            responsive: true,
-
-            maintainAspectRatio: false
-
         }
-
-    }
-);
+    });
+}
 
 // =============================
-// PDF BUTTON
+// REPORT DOWNLOAD (API INTEGRATION)
 // =============================
 
-document
-.querySelector(".pdf-btn")
-.addEventListener("click", () => {
+document.querySelector(".pdf-btn").addEventListener("click", async () => {
+    const res = await fetch(`${API_BASE}/reports/individual/pdf`, {
+        method: "GET",
+        credentials: "include"
+    });
 
-    window.print();
+    const data = await res.json();
 
+    window.location.href = `${API_BASE}/reports/${data.reportId}/download`;
 });
 
 // =============================
-// EXPORT REPORT
+// EXPORT BUTTON (CSV or TXT fallback)
 // =============================
 
-document
-.querySelector(".export-btn")
-.addEventListener("click", () => {
+document.querySelector(".export-btn").addEventListener("click", () => {
 
     const report = `
-
-TAXEASE TAX REPORT
+TAX REPORT
 
 Name: ${user.name}
-
 Email: ${user.email}
-
-Profile Type: ${user.profileType}
-
 TIN: ${user.tin}
 
-Gross Income:
-₦${user.grossIncome.toLocaleString()}
-
-PAYE Tax:
-₦${user.payeTax.toLocaleString()}
-
-Deductions:
-₦${user.deductions.toLocaleString()}
-
-Net Income:
-₦${user.netIncome.toLocaleString()}
-
+Income: ₦${user.grossIncome}
+Tax: ₦${user.payeTax}
+Net: ₦${user.netIncome}
 `;
 
-    const blob =
-    new Blob(
-        [report],
-        { type: "text/plain" }
-    );
+    const blob = new Blob([report], { type: "text/plain" });
 
-    const link =
-    document.createElement("a");
+    const link = document.createElement("a");
 
-    link.href =
-    URL.createObjectURL(blob);
-
-    link.download =
-    "Taxease_Report.txt";
+    link.href = URL.createObjectURL(blob);
+    link.download = "tax_report.txt";
 
     link.click();
 });
 
 // =============================
-// PAYMENT HISTORY BUTTON
+// INIT DASHBOARD
 // =============================
 
-document
-.querySelector("#paymentHistoryBtn")
-.addEventListener("click", function () {
-    window.location.href = "/history/index.html";
-});
+async function initDashboard() {
+
+    await loadUserProfile();
+
+    renderProfile();
+    renderCards();
+    await renderHistory();
+    renderCharts();
+}
+
+initDashboard();

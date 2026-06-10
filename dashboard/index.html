@@ -1,172 +1,137 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taxease Dashboard</title>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Taxease Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css" />
 
-  <link rel="stylesheet" href="dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
+  <body>
+    <div class="dashboard">
+      <!-- Header -->
 
-<body>
-
-  <div class="dashboard">
-
-    <!-- Header -->
-
-    <div class="header">
-
-      <div>
-        <h1>Tax Dashboard</h1>
-        <p>Welcome to Taxease</p>
-      </div>
-
-      <div class="header-buttons">
-
-        <button class="pdf-btn">
-          Download PDF Summary
-        </button>
-
-        <button class="export-btn">
-          Export Tax Report
-        </button>
-
-        <button id="paymentHistoryBtn" class="history-btn">
-          Payment History
-        </button>
-
-      </div>
-
-    </div>
-
-    <!-- Profile Information -->
-
-    <div class="card">
-
-      <h2>Profile Information</h2>
-
-      <div class="profile-grid">
-
+      <div class="header">
         <div>
-          <span>Full Name</span>
-          <h3 id="userName">-</h3>
+          <h1>Tax Dashboard</h1>
+          <p>Welcome to Taxease</p>
         </div>
 
-        <div>
-          <span>Email</span>
-          <h3 id="userEmail">-</h3>
+        <div class="header-buttons">
+          <button class="pdf-btn">Download PDF Summary</button>
+
+          <button class="export-btn">Export Tax Report</button>
+
+          <button id="paymentHistoryBtn" class="history-btn">
+            Payment History
+          </button>
         </div>
-
-        <div>
-          <span>Profile Type</span>
-          <h3 id="profileType">-</h3>
-        </div>
-
-        <div>
-          <span>TIN</span>
-          <h3 id="tin">-</h3>
-        </div>
-
       </div>
 
-    </div>
-
-    <!-- Dynamic Profile Section -->
-
-    <div class="card">
-
-      <h2>Professional Information</h2>
-
-      <div id="dynamicProfile">
-
-      </div>
-
-    </div>
-
-    <!-- Tax Summary -->
-
-    <div class="summary-grid">
-
-      <div class="summary-card">
-        <p>Gross Income</p>
-        <h2 id="grossIncome">₦0</h2>
-      </div>
-
-      <div class="summary-card">
-        <p>PAYE Tax</p>
-        <h2 id="payeTax" class="tax-red">₦0</h2>
-      </div>
-
-      <div class="summary-card">
-        <p>Total Deductions</p>
-        <h2 id="deductions">₦0</h2>
-      </div>
-
-      <div class="summary-card">
-        <p>Net Income</p>
-        <h2 id="netIncome" class="tax-green">₦0</h2>
-      </div>
-
-    </div>
-
-    <!-- Charts -->
-
-    <div class="chart-grid">
+      <!-- Profile Information -->
 
       <div class="card">
+        <h2>Profile Information</h2>
 
-        <h2>Tax Breakdown</h2>
+        <div class="profile-grid">
+          <div>
+            <span>Full Name</span>
+            <h3 id="userName">-</h3>
+          </div>
 
-        <canvas id="pieChart"></canvas>
+          <div>
+            <span>Email</span>
+            <h3 id="userEmail">-</h3>
+          </div>
 
+          <div>
+            <span>Profile Type</span>
+            <h3 id="profileType">-</h3>
+          </div>
+
+          <div>
+            <span>TIN</span>
+            <h3 id="tin">-</h3>
+          </div>
+        </div>
       </div>
+
+      <!-- Dynamic Profile Section -->
 
       <div class="card">
+        <h2>Professional Information</h2>
 
-        <h2>Income Analysis</h2>
-
-        <canvas id="barChart"></canvas>
-
+        <div id="dynamicProfile"></div>
       </div>
 
+      <!-- Tax Summary -->
+
+      <div class="summary-grid">
+        <div class="summary-card">
+          <p>Gross Income</p>
+          <h2 id="grossIncome">₦0</h2>
+        </div>
+
+        <div class="summary-card">
+          <p>PAYE Tax</p>
+          <h2 id="payeTax" class="tax-red">₦0</h2>
+        </div>
+
+        <div class="summary-card">
+          <p>Total Deductions</p>
+          <h2 id="deductions">₦0</h2>
+        </div>
+
+        <div class="summary-card">
+          <p>Net Income</p>
+          <h2 id="netIncome" class="tax-green">₦0</h2>
+        </div>
+      </div>
+
+      <!-- Charts -->
+
+      <div class="chart-grid">
+        <div class="card">
+          <h2>Tax Breakdown</h2>
+
+          <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="card">
+          <h2>Income Analysis</h2>
+
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Tax History -->
+
+      <div class="card">
+        <h2>Tax History</h2>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Month</th>
+              <th>Income</th>
+              <th>Tax</th>
+              <th>Net Income</th>
+            </tr>
+          </thead>
+
+          <tbody id="historyTable"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- Tax History -->
-
-    <div class="card">
-
-      <h2>Tax History</h2>
-
-      <table>
-
-        <thead>
-
-          <tr>
-            <th>Month</th>
-            <th>Income</th>
-            <th>Tax</th>
-            <th>Net Income</th>
-          </tr>
-
-        </thead>
-
-        <tbody id="historyTable">
-
-        </tbody>
-
-      </table>
-
-    </div>
-
-  </div>
-
-  <script src="dashboard.js"></script>
-
-</body>
-
+    <script src="dashboard.js"></script>
+  </body>
 </html>

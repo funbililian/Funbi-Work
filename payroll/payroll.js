@@ -1,383 +1,172 @@
-let payrollData = [];
-
 let pieChart;
 let barChart;
+let currentBatchId = null;
 
-function naira(value){
+const API_BASE = "https://tax-system-backend.onrender.com/api/payroll";
 
-    return "₦" +
-    Number(value).toLocaleString();
+// ===================================
+// FORMAT CURRENCY
+// ===================================
 
+function naira(value) {
+    return "₦" + Number(value || 0).toLocaleString();
 }
 
-/* ==========================
-   PAYE CALCULATION
-========================== */
+// ===================================
+// UPLOAD CSV TO BACKEND
+// ===================================
 
-function calculatePAYE(taxableIncome){
+document.getElementById("uploadBtn").addEventListener("click", uploadPayrollFile);
 
-    let tax = 0;
+async function uploadPayrollFile() {
+    const fileInput = document.getElementById("csvFile");
+    const file = fileInput.files[0];
 
-    let remaining =
-    taxableIncome;
-
-    const bands = [
-
-        {limit:800000,rate:0},
-
-        {limit:2200000,rate:0.15},
-
-        {limit:9000000,rate:0.18},
-
-        {limit:13000000,rate:0.21},
-
-        {limit:25000000,rate:0.23}
-
-    ];
-
-    for(const band of bands){
-
-        if(remaining <= 0)
-        break;
-
-        const amount =
-
-        Math.min(
-            remaining,
-            band.limit
-        );
-
-        tax +=
-        amount *
-        band.rate;
-
-        remaining -= amount;
-
-    }
-
-    if(remaining > 0){
-
-        tax +=
-        remaining *
-        0.25;
-
-    }
-
-    return tax;
-
-}
-
-/* ==========================
-   CSV PARSE
-========================== */
-
-document
-.getElementById("uploadBtn")
-.addEventListener(
-"click",
-loadCSV
-);
-
-function loadCSV(){
-
-    const file =
-
-    document
-    .getElementById(
-    "csvFile"
-    )
-    .files[0];
-
-    if(!file){
-
-        alert(
-        "Select a CSV file"
-        );
-
+    if (!file) {
+        alert("Please select a CSV file");
         return;
-
     }
 
-    const reader =
-    new FileReader();
+    const formData = new FormData();
+    formData.append("file", file);
 
-    reader.onload =
-    function(event){
-
-        const csv =
-        event.target.result;
-
-        parseCSV(csv);
-
-    };
-
-    reader.readAsText(file);
-
-}
-
-function parseCSV(csv){
-
-    payrollData = [];
-
-    const rows =
-    csv.trim().split("\n");
-
-    rows.shift();
-
-    rows.forEach(row=>{
-
-        const cols =
-        row.split(",");
-
-        payrollData.push({
-
-            name:cols[0],
-
-            tin:cols[1],
-
-            gross:
-            Number(cols[2]),
-
-            nhf:
-            Number(cols[3]),
-
-            nhis:
-            Number(cols[4]),
-
-            life:
-            Number(cols[5]),
-
-            mortgage:
-            Number(cols[6]),
-
-            rent:
-            Number(cols[7])
-
+    try {
+        const res = await fetch(`${API_BASE}/upload`, {
+            method: "POST",
+            credentials: "include",
+            body: formData
         });
 
-    });
+        const data = await res.json();
 
-    alert(
-    payrollData.length +
-    " employees loaded"
-    );
+        if (!res.ok) {
+            throw new Error(data.message || "Upload failed");
+        }
 
+        alert(`Payroll processed: ${data.totalProcessed} employees`);
+
+        currentBatchId = data.batchJobId;
+
+        // auto load results
+        loadBatchResults(currentBatchId);
+
+    } catch (error) {
+        alert(error.message);
+        console.error(error);
+    }
 }
 
-/* ==========================
-   CALCULATE PAYROLL
-========================== */
+// ===================================
+// LOAD BATCH RESULTS
+// ===================================
 
-document
-.getElementById(
-"calculatePayrollBtn"
-)
-.addEventListener(
-"click",
-calculatePayroll
-);
+async function loadBatchResults(batchId) {
+    try {
+        const res = await fetch(`${API_BASE}/uploads/${batchId}/results`, {
+            credentials: "include"
+        });
 
-function calculatePayroll(){
+        const data = await res.json();
 
-    const tableBody =
+        if (!res.ok) {
+            throw new Error(data.message || "Failed to load results");
+        }
 
-    document.getElementById(
-    "tableBody"
-    );
+        renderPayrollTable(data.data);
 
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+// ===================================
+// RENDER TABLE
+// ===================================
+
+function renderPayrollTable(employees) {
+    const tableBody = document.getElementById("tableBody");
     tableBody.innerHTML = "";
 
     let totalGross = 0;
     let totalTax = 0;
     let totalNet = 0;
 
-    payrollData.forEach(emp=>{
+    employees.forEach(emp => {
+        const result = emp.result;
 
-        const annualIncome =
-        emp.gross * 12;
+        const gross = result.grossSalary;
+        const tax = result.annualTax;
+        const net = result.netSalary;
 
-        const pension =
-        annualIncome * 0.08;
-
-        const rentRelief =
-        Math.min(
-        emp.rent * 0.20,
-        500000
-        );
-
-        const annualNHF =
-        emp.nhf * 12;
-
-        const annualNHIS =
-        emp.nhis * 12;
-
-        const annualLife =
-        emp.life * 12;
-
-        const annualMortgage =
-        emp.mortgage * 12;
-
-        const taxable =
-
-        annualIncome
-        - pension
-        - rentRelief
-        - annualNHF
-        - annualNHIS
-        - annualLife
-        - annualMortgage;
-
-        const tax =
-        calculatePAYE(
-        taxable
-        );
-
-        const net =
-        annualIncome
-        - tax
-        - pension;
-
-        totalGross +=
-        annualIncome;
-
-        totalTax +=
-        tax;
-
-        totalNet +=
-        net;
+        totalGross += gross;
+        totalTax += tax;
+        totalNet += net;
 
         tableBody.innerHTML += `
-
-        <tr>
-
-            <td>${emp.name}</td>
-
-            <td>${emp.tin}</td>
-
-            <td>${naira(annualIncome)}</td>
-
-            <td>${naira(pension)}</td>
-
-            <td>${naira(tax)}</td>
-
-            <td>${naira(net)}</td>
-
-        </tr>
-
+            <tr>
+                <td>${emp.userId?.first_name || "N/A"}</td>
+                <td>${emp.userId?.email || "N/A"}</td>
+                <td>${naira(gross)}</td>
+                <td>${naira(result.taxableIncome)}</td>
+                <td>${naira(tax)}</td>
+                <td>${naira(net)}</td>
+            </tr>
         `;
-
     });
 
-    document.getElementById(
-    "employeeCount"
-    ).textContent =
-    payrollData.length;
+    document.getElementById("employeeCount").textContent = employees.length;
+    document.getElementById("totalGross").textContent = naira(totalGross);
+    document.getElementById("totalTax").textContent = naira(totalTax);
+    document.getElementById("totalNet").textContent = naira(totalNet);
 
-    document.getElementById(
-    "totalGross"
-    ).textContent =
-    naira(totalGross);
-
-    document.getElementById(
-    "totalTax"
-    ).textContent =
-    naira(totalTax);
-
-    document.getElementById(
-    "totalNet"
-    ).textContent =
-    naira(totalNet);
-
-    createCharts(
-    totalGross,
-    totalTax,
-    totalNet
-    );
-
+    createCharts(totalGross, totalTax, totalNet);
 }
 
-/* ==========================
-   CHARTS
-========================== */
+// ===================================
+// LOAD ALL UPLOAD HISTORY
+// ===================================
 
-function createCharts(
-gross,
-tax,
-net
-){
+async function loadUploadsHistory() {
+    try {
+        const res = await fetch(`${API_BASE}/uploads`, {
+            credentials: "include"
+        });
 
-    if(pieChart)
-    pieChart.destroy();
+        const data = await res.json();
 
-    if(barChart)
-    barChart.destroy();
+        console.log("Upload History:", data.data);
 
-    pieChart =
-    new Chart(
+    } catch (error) {
+        console.error(error);
+    }
+}
 
-        document.getElementById(
-        "payrollPieChart"
-        ),
+// ===================================
+// CHARTS
+// ===================================
 
-        {
+function createCharts(gross, tax, net) {
+    if (pieChart) pieChart.destroy();
+    if (barChart) barChart.destroy();
 
-            type:"pie",
-
-            data:{
-
-                labels:[
-                    "PAYE",
-                    "Net Income"
-                ],
-
-                datasets:[{
-
-                    data:[
-                        tax,
-                        net
-                    ]
-
-                }]
-
-            }
-
+    pieChart = new Chart(document.getElementById("payrollPieChart"), {
+        type: "pie",
+        data: {
+            labels: ["Tax", "Net Income"],
+            datasets: [{
+                data: [tax, net]
+            }]
         }
+    });
 
-    );
-
-    barChart =
-    new Chart(
-
-        document.getElementById(
-        "payrollBarChart"
-        ),
-
-        {
-
-            type:"bar",
-
-            data:{
-
-                labels:[
-                    "Gross",
-                    "Tax",
-                    "Net"
-                ],
-
-                datasets:[{
-
-                    data:[
-                        gross,
-                        tax,
-                        net
-                    ]
-
-                }]
-
-            }
-
+    barChart = new Chart(document.getElementById("payrollBarChart"), {
+        type: "bar",
+        data: {
+            labels: ["Gross", "Tax", "Net"],
+            datasets: [{
+                label: "Payroll Summary",
+                data: [gross, tax, net]
+            }]
         }
-
-    );
-
+    });
 }

@@ -5,62 +5,75 @@ const rememberMe = document.getElementById("rememberMe");
 
 // Load saved email when page opens
 window.addEventListener("load", () => {
-    const savedEmail = localStorage.getItem("savedEmail");
+  const savedEmail = localStorage.getItem("savedEmail");
 
-    if (savedEmail) {
-        emailInput.value = savedEmail;
-        rememberMe.checked = true;
-    }
+  if (savedEmail) {
+    emailInput.value = savedEmail;
+    rememberMe.checked = true;
+  }
 });
 
-loginForm.addEventListener("submit", function (event) {
-    event.preventDefault();
+loginForm.addEventListener("submit", async function (event) {
+  event.preventDefault();
 
-    const email = emailInput.value.trim();
-    const password = passwordInput.value.trim();
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
-    // Check empty fields
-    if (!email || !password) {
-        alert("Please fill in all fields.");
-        return;
-    }
+  // Check empty fields
+  if (!email || !password) {
+    alert("Please fill in all fields.");
+    return;
+  }
 
-    
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  // Email validation
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!emailPattern.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
+  if (!emailPattern.test(email)) {
+    alert("Please enter a valid email address.");
+    return;
+  }
 
-    // Strong password validation
-    const passwordPattern =
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  // Remember Me
+  if (rememberMe.checked) {
+    localStorage.setItem("savedEmail", email);
+  } else {
+    localStorage.removeItem("savedEmail");
+  }
 
-    if (!passwordPattern.test(password)) {
-        alert(
-            "Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number, and one special character."
-        );
-        return;
-    }
+  try {
+    const response = await fetch(
+      "https://tax-system-backend.onrender.com/api/auth/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      },
+    );
 
-    // Remember Me
-    if (rememberMe.checked) {
-        localStorage.setItem("savedEmail", email);
+    const data = await response.json();
+
+    if (response.ok && data.success) {
+      // Save user data locally
+      localStorage.setItem("currentUser", JSON.stringify(data.data));
+
+      alert("Login successful!");
+
+      // Redirect to dashboard
+      window.location.href = "/dashboard/index.html";
     } else {
-        localStorage.removeItem("savedEmail");
+      alert(data.message || "Invalid email or password.");
     }
+  } catch (error) {
+    console.error("Login Error:", error);
 
-
-    const validEmail = "user@example.com";
-    const validPassword = "Password123!";
-
-    if (email === validEmail && password === validPassword) {
-        alert("Login successful!");
-
-        // Redirect to dashboard
-        window.location.href ="/dashboard/index.html";
-    } else {
-        alert("Invalid email or password.");
-    }
+    alert(
+      "Unable to connect to the server. Please check your internet connection and try again.",
+    );
+  }
 });

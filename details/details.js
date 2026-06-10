@@ -5,49 +5,41 @@ const freelancerFields = document.getElementById("freelancerFields");
 const businessFields = document.getElementById("businessFields");
 
 profileType.addEventListener("change", () => {
+  employeeFields.classList.add("hidden");
+  freelancerFields.classList.add("hidden");
+  businessFields.classList.add("hidden");
 
-    employeeFields.classList.add("hidden");
-    freelancerFields.classList.add("hidden");
-    businessFields.classList.add("hidden");
+  if (profileType.value === "employee") {
+    employeeFields.classList.remove("hidden");
+  }
 
-    if(profileType.value === "employee"){
-        employeeFields.classList.remove("hidden");
-    }
+  if (profileType.value === "freelancer") {
+    freelancerFields.classList.remove("hidden");
+  }
 
-    if(profileType.value === "freelancer"){
-        freelancerFields.classList.remove("hidden");
-    }
-
-    if(profileType.value === "business"){
-        businessFields.classList.remove("hidden");
-    }
-
+  if (profileType.value === "business") {
+    businessFields.classList.remove("hidden");
+  }
 });
 
-document
-.getElementById("profileForm")
-.addEventListener("submit", function(e){
+document.getElementById("profileForm").addEventListener("submit", function (e) {
+  e.preventDefault();
 
-    e.preventDefault();
+  const requiredFields = document.querySelectorAll("[required]");
 
-    const requiredFields = document.querySelectorAll("[required]");
+  for (let field of requiredFields) {
+    if (!field.value.trim()) {
+      alert("Please complete all compulsory fields.");
 
-    for(let field of requiredFields){
+      field.focus();
 
-        if(!field.value.trim()){
-
-            alert("Please complete all compulsory fields.");
-
-            field.focus();
-
-            return;
-        }
+      return;
     }
+  }
 
-    alert("Profile saved successfully!");
+  alert("Profile saved successfully!");
 
-    // Redirect to dashboard
+  // Redirect to dashboard
 
-    window.location.href = "/dashboard/index.html";
-
+  window.location.href = "/dashboard/index.html";
 });

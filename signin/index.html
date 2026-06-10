@@ -2,180 +2,148 @@
 signin.html
 ========================= -->
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taxease Registration</title>
 
-  <title>Taxease Registration</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="signin.css" />
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="signin.css">
+    <!-- GOOGLE FONT -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
 
-  <!-- GOOGLE FONT -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
+  <body>
+    <!-- ================= CONTAINER ================= -->
 
-<body>
+    <section class="register-section">
+      <div class="register-container">
+        <!-- LEFT SIDE -->
 
-  <!-- ================= CONTAINER ================= -->
+        <div class="register-left">
+          <div class="logo-area">
+            <img
+              src="https://res.cloudinary.com/dmtbsxz67/image/upload/v1780010677/Screenshot_20260528_235724_Figma_zqpyn9.jpg"
+              alt="Logo"
+            />
 
-  <section class="register-section">
+            <h1>Taxease</h1>
+          </div>
 
-    <div class="register-container">
+          <h2>Create Your Account</h2>
 
-      <!-- LEFT SIDE -->
-
-      <div class="register-left">
-
-        <div class="logo-area">
-
-          <img src="https://res.cloudinary.com/dmtbsxz67/image/upload/v1780010677/Screenshot_20260528_235724_Figma_zqpyn9.jpg" alt="Logo">
-
-          <h1>Taxease</h1>
-
+          <p>
+            Join Taxease and start calculating and managing your taxes easily
+            and securely.
+          </p>
         </div>
 
-        <h2>Create Your Account</h2>
+        <!-- RIGHT SIDE -->
 
-        <p>
-          Join Taxease and start calculating and managing your taxes easily and securely.
-        </p>
+        <div class="register-right">
+          <form id="registerForm">
+            <h2>Sign In</h2>
 
-      </div>
+            <!-- FULL NAME -->
 
-      <!-- RIGHT SIDE -->
+            <div class="input-group">
+              <label>Full Name</label>
 
-      <div class="register-right">
+              <input
+                type="text"
+                id="fullName"
+                placeholder="Enter your full name"
+              />
+            </div>
 
-        <form id="registerForm">
+            <!-- EMAIL -->
 
-          <h2>Sign In</h2>
+            <div class="input-group">
+              <label>Email Address</label>
 
-          <!-- FULL NAME -->
+              <input type="email" id="email" placeholder="Enter your email" />
+            </div>
 
-          <div class="input-group">
+            <!-- PHONE -->
 
-            <label>Full Name</label>
+            <div class="input-group">
+              <label>Phone Number</label>
 
-            <input
-              type="text"
-              id="fullName"
-              placeholder="Enter your full name"
-            >
+              <input
+                type="tel"
+                id="phone"
+                placeholder="Enter your phone number"
+              />
+            </div>
 
-          </div>
+            <!-- PASSWORD -->
 
-          <!-- EMAIL -->
+            <div class="input-group">
+              <label>Password</label>
 
-          <div class="input-group">
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+              />
+            </div>
 
-            <label>Email Address</label>
+            <!-- CONFIRM PASSWORD -->
 
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your email"
-            >
+            <div class="input-group">
+              <label>Confirm Password</label>
 
-          </div>
-
-          <!-- PHONE -->
-
-          <div class="input-group">
-
-            <label>Phone Number</label>
-
-            <input
-              type="tel"
-              id="phone"
-              placeholder="Enter your phone number"
-            >
-
-          </div>
-
-          <!-- PASSWORD -->
-
-          <div class="input-group">
-
-            <label>Password</label>
-
-            <input
-              type="password"
-              id="password"
-              placeholder="Enter password"
-            >
-
-          </div>
-
-          <!-- CONFIRM PASSWORD -->
-
-          <div class="input-group">
-
-            <label>Confirm Password</label>
-
-            <input
-              type="password"
-              id="confirmPassword"
-              placeholder="Confirm password"
-            >
-
-          </div>
-          <!-- =========================
+              <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirm password"
+              />
+            </div>
+            <!-- =========================
 DIVIDER
 ========================= -->
 
-<div class="divider">
+            <div class="divider">
+              <span>OR</span>
+            </div>
 
-  <span>OR</span>
-
-</div>
-
-<!-- =========================
+            <!-- =========================
 GOOGLE LOGIN BUTTON
 ========================= -->
 
-<button
-  type="button"
-  class="google-btn"
->
+            <button type="button" class="google-btn">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg?utm_source=chatgpt.com"
+                alt="Google Logo"
+              />
 
-  <img
-    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg?utm_source=chatgpt.com"
-    alt="Google Logo"
-  >
+              Continue with Google
+            </button>
 
-  Continue with Google
+            <!-- BUTTON -->
 
-          </button>
+            <button type="submit" class="signin-btn">Create Account</button>
 
-          <!-- BUTTON -->
+            <!-- LOGIN -->
 
-          <button type="submit" class="signin-btn">
-            Create Account
-          </button>
-
-          <!-- LOGIN -->
-
-          <p class="login-text">
-            Already have an account?
-            <a href="/login/index.html">Login</a>
-          </p>
-
-        </form>
-
+            <p class="login-text">
+              Already have an account?
+              <a href="/login/index.html">Login</a>
+            </p>
+          </form>
+        </div>
       </div>
+    </section>
 
-    </div>
-
-  </section>
-
-  <!-- JAVASCRIPT -->
-  <script src="signin.js"></script>
-
-</body>
-
+    <!-- JAVASCRIPT -->
+    <script src="signin.js"></script>
+  </body>
 </html>

@@ -105,3 +105,41 @@ Project Goals
 - Provide accurate and reliable tax estimates.
 - Enhance accessibility through a user-friendly interface.
 
+---
+
+Project Structure
+
+- /public
+  - index.html
+  - favicon.ico
+  - assets/
+    - css/
+    - js/
+    - images/
+- /src
+  - components/
+    - Auth/
+    - Dashboard/
+    - TaxCalculator/
+    - Reports/
+  - pages/
+    - Login
+    - Register
+    - Dashboard
+    - Calculator
+    - Payments
+    - Profile
+  - services/
+    - taxService.js
+    - authService.js
+    - paymentService.js
+  - utils/
+    - taxUtils.js
+    - validation.js
+- /data
+  - sample-employees.csv
+- /docs
+  - requirements.md
+- package.json
+- README.md
+

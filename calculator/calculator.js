@@ -1,601 +1,286 @@
 // ===================================
+// CONFIG
+// ===================================
+
+const API_BASE = "https://tax-system-backend.onrender.com/api/tax";
+
+// ===================================
 // ELEMENTS
 // ===================================
 
-const profileType =
-document.getElementById("profileType");
-
-const businessSection =
-document.getElementById("businessSection");
-
-const batchPayrollBtn =
-document.getElementById("batchPayrollBtn");
-
-const calculateBtn =
-document.getElementById("calculateBtn");
+const profileType = document.getElementById("profileType");
+const businessSection = document.getElementById("businessSection");
+const batchPayrollBtn = document.getElementById("batchPayrollBtn");
+const calculateBtn = document.getElementById("calculateBtn");
+const saveBtn = document.getElementById("saveBtn");
+const makePaymentBtn = document.getElementById("makePaymentBtn");
 
 let pieChart;
 let barChart;
 
 // ===================================
-// PROFILE TYPE SWITCHING
+// PROFILE SWITCHING
 // ===================================
 
-function toggleProfileSections(){
-
-    if(
-        profileType.value ===
-        "Business Owner"
-    ){
-
-        businessSection.style.display =
-        "block";
-
-    }
-
-    else{
-
-        businessSection.style.display =
-        "none";
-
-    }
-
+function toggleProfileSections() {
+  businessSection.style.display =
+    profileType.value === "Business Owner" ? "block" : "none";
 }
 
 toggleProfileSections();
-
-profileType.addEventListener(
-    "change",
-    toggleProfileSections
-);
+profileType.addEventListener("change", toggleProfileSections);
 
 // ===================================
-// PAYROLL PAGE REDIRECT
+// NAVIGATION
 // ===================================
 
-batchPayrollBtn.addEventListener(
-    "click",
-    () => {
+batchPayrollBtn.addEventListener("click", () => {
+  window.location.href = "/payroll/index.html";
+});
 
-        window.location.href =
-        "/payroll/index.html";
-
-    }
-);
-
-makePaymentBtn.addEventListener(
-    "click", 
-    () => {
-        
-        window.location.href = "/payment/index.html";
-    }
-);
+makePaymentBtn.addEventListener("click", () => {
+  window.location.href = "/payment/index.html";
+});
 
 // ===================================
-// PAYE TAX BANDS
+// HELPERS
 // ===================================
 
-function calculatePAYE(taxableIncome) {
-  let tax = 0;
+function naira(value) {
+  return "₦" + Number(value).toLocaleString();
+}
 
-    let remaining =
-    taxableIncome;
-
-    const bands = [
-
-        {
-            limit:800000,
-            rate:0
-        },
-
-        {
-            limit:2200000,
-            rate:0.15
-        },
-
-        {
-            limit:9000000,
-            rate:0.18
-        },
-
-        {
-            limit:13000000,
-            rate:0.21
-        },
-
-        {
-            limit:25000000,
-            rate:0.23
-        }
-
-    ];
-
-    for(const band of bands){
-
-        if(
-            remaining <= 0
-        ){
-            break;
-        }
-
-        const amount =
-
-        Math.min(
-            remaining,
-            band.limit
-        );
-
-        tax +=
-        amount *
-        band.rate;
-
-        remaining -= amount;
-
-    }
-
-    if(
-        remaining > 0
-    ){
-
-        tax +=
-        remaining *
-        0.25;
-
-    }
-
-    return Math.round(tax);
-
+function getInput(id) {
+  return Number(document.getElementById(id).value || 0);
 }
 
 // ===================================
-// FORMAT CURRENCY
+// COLLECT DATA
 // ===================================
 
-function naira(value){
+function collectPayload() {
+  const profile = profileType.value;
 
-    return "₦" +
-    Number(value)
-    .toLocaleString();
+  let salary = 0;
+  let revenue = 0;
+  let expenses = 0;
 
+  if (profile !== "Business Owner") {
+    salary = getInput("grossIncome") * 12;
+  } else {
+    revenue = getInput("annualRevenue");
+    expenses = getInput("annualExpenses");
+    salary = Math.max(revenue - expenses, 0);
+  }
+
+  const deductions = {
+    pension: salary * 0.08,
+    rent: Math.min(getInput("annualRent") * 0.2, 500000),
+    nhf: getInput("nhf") * 12,
+    nhis: getInput("nhis") * 12,
+    lifeInsurance: getInput("lifeInsurance") * 12,
+    mortgageInterest: getInput("mortgageInterest") * 12,
+  };
+
+  return { salary, deductions, profile };
 }
 
 // ===================================
-// CALCULATE
+// API CALL - CALCULATE TAX
 // ===================================
 
-calculateBtn.addEventListener(
-    "click",
-    calculateTax
-);
+async function calculateTax() {
+  try {
+    const payload = collectPayload();
 
-function calculateTax(){
+    const res = await fetch(`${API_BASE}/calculate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-    const currentProfile =
-    profileType.value;
+    const data = await res.json();
 
-    let annualIncome = 0;
-
-    // ===================================
-    // EMPLOYEE / FREELANCER
-    // ===================================
-
-    if(
-        currentProfile !==
-        "Business Owner"
-    ){
-
-        const monthlyIncome =
-
-        Number(
-            document.getElementById(
-                "grossIncome"
-            ).value
-        );
-
-        annualIncome =
-        monthlyIncome * 12;
-
+    if (!res.ok) {
+      throw new Error(data.message || "Calculation failed");
     }
 
-    // ===================================
-    // BUSINESS OWNER
-    // ===================================
-
-    else{
-
-        const revenue =
-
-        Number(
-            document.getElementById(
-                "annualRevenue"
-            ).value
-        );
-
-        const expenses =
-
-        Number(
-            document.getElementById(
-                "annualExpenses"
-            ).value
-        );
-
-        annualIncome =
-        Math.max(
-            revenue - expenses,
-            0
-        );
-
-    }
-
-    // ===================================
-    // PENSION (8%)
-    // ===================================
-
-    const annualPension =
-
-    annualIncome * 0.08;
-
-    // ===================================
-    // RENT RELIEF
-    // ===================================
-
-    const annualRent =
-
-    Number(
-        document.getElementById(
-            "annualRent"
-        ).value
-    );
-
-    const annualRentRelief =
-
-    Math.min(
-        annualRent * 0.20,
-        500000
-    );
-
-    // ===================================
-    // OTHER RELIEFS
-    // ===================================
-
-    const annualNHF =
-
-    Number(
-        document.getElementById(
-            "nhf"
-        ).value
-    ) * 12;
-
-    const annualNHIS =
-
-    Number(
-        document.getElementById(
-            "nhis"
-        ).value
-    ) * 12;
-
-    const annualLifeInsurance =
-
-    Number(
-        document.getElementById(
-            "lifeInsurance"
-        ).value
-    ) * 12;
-
-    const annualMortgageInterest =
-
-    Number(
-        document.getElementById(
-            "mortgageInterest"
-        ).value
-    ) * 12;
-
-    // ===================================
-    // TAXABLE INCOME
-    // ===================================
-
-    let taxableIncome =
-
-        annualIncome
-
-        - annualPension
-
-        - annualRentRelief
-
-        - annualNHF
-
-        - annualNHIS
-
-        - annualLifeInsurance
-
-        - annualMortgageInterest;
-
-    if(
-        taxableIncome < 0
-    ){
-
-        taxableIncome = 0;
-
-    }
-
-    // ===================================
-    // PAYE
-    // ===================================
-
-    const annualPAYE =
-
-    calculatePAYE(
-        taxableIncome
-    );
-
-    const annualDeductions =
-
-        annualPension
-
-        + annualNHF
-
-        + annualNHIS
-
-        + annualLifeInsurance
-
-        + annualMortgageInterest;
-
-    const annualNet =
-
-        annualIncome
-
-        - annualPAYE
-
-        - annualDeductions;
-
-    // ===================================
-    // MONTHLY FIGURES
-    // ===================================
-
-    const monthlyGross =
-    annualIncome / 12;
-
-    const monthlyPension =
-    annualPension / 12;
-
-    const monthlyRentRelief =
-    annualRentRelief / 12;
-
-    const monthlyPAYE =
-    annualPAYE / 12;
-
-    const monthlyNet =
-    annualNet / 12;
-
-    // ===================================
-    // MONTHLY SUMMARY
-    // ===================================
-
-    document.getElementById(
-        "monthlyGross"
-    ).textContent =
-    naira(monthlyGross);
-
-    document.getElementById(
-        "monthlyPension"
-    ).textContent =
-    naira(monthlyPension);
-
-    document.getElementById(
-        "monthlyRentRelief"
-    ).textContent =
-    naira(monthlyRentRelief);
-
-    document.getElementById(
-        "monthlyPAYE"
-    ).textContent =
-    naira(monthlyPAYE);
-
-    document.getElementById(
-        "monthlyNet"
-    ).textContent =
-    naira(monthlyNet);
-
-    // ===================================
-    // ANNUAL SUMMARY
-    // ===================================
-
-    document.getElementById(
-        "annualGross"
-    ).textContent =
-    naira(annualIncome);
-
-    document.getElementById(
-        "annualPension"
-    ).textContent =
-    naira(annualPension);
-
-    document.getElementById(
-        "annualRentRelief"
-    ).textContent =
+    renderResults(data.data);
+  } catch (error) {
+    alert(error.message);
+    console.error(error);
+  }
+}
+
+calculateBtn.addEventListener("click", calculateTax);
+
+// ===================================
+// RENDER RESULTS
+// ===================================
+
+function renderResults(result) {
+  const {
+    annualIncome,
+    annualPAYE,
+    annualPension,
+    annualRentRelief,
+    annualNHF,
+    annualNHIS,
+    annualLifeInsurance,
+    annualMortgageInterest,
+    annualNet,
+  } = result;
+
+  const annualDeductions =
+    annualPension +
+    annualNHF +
+    annualNHIS +
+    annualLifeInsurance +
+    annualMortgageInterest;
+
+  // MONTHLY
+  document.getElementById("monthlyGross").textContent = naira(
+    annualIncome / 12,
+  );
+
+  document.getElementById("monthlyPension").textContent = naira(
+    annualPension / 12,
+  );
+
+  document.getElementById("monthlyRentRelief").textContent = naira(
+    annualRentRelief / 12,
+  );
+
+  document.getElementById("monthlyPAYE").textContent = naira(annualPAYE / 12);
+
+  document.getElementById("monthlyNet").textContent = naira(annualNet / 12);
+
+  // ANNUAL
+  document.getElementById("annualGross").textContent = naira(annualIncome);
+
+  document.getElementById("annualPension").textContent = naira(annualPension);
+
+  document.getElementById("annualRentRelief").textContent =
     naira(annualRentRelief);
 
-    document.getElementById(
-        "annualPAYE"
-    ).textContent =
-    naira(annualPAYE);
+  document.getElementById("annualPAYE").textContent = naira(annualPAYE);
 
-    document.getElementById(
-        "annualNet"
-    ).textContent =
-    naira(annualNet);
+  document.getElementById("annualNet").textContent = naira(annualNet);
 
-    // ===================================
-    // BREAKDOWN TABLE
-    // ===================================
+  // BREAKDOWN
+  document.getElementById("grossBreakdown").textContent = naira(annualIncome);
 
-    document.getElementById(
-        "grossBreakdown"
-    ).textContent =
-    naira(annualIncome);
-
-    document.getElementById(
-        "pensionBreakdown"
-    ).textContent =
+  document.getElementById("pensionBreakdown").textContent =
     naira(annualPension);
 
-    document.getElementById(
-        "nhfBreakdown"
-    ).textContent =
-    naira(annualNHF);
+  document.getElementById("nhfBreakdown").textContent = naira(annualNHF);
 
-    document.getElementById(
-        "rentReliefBreakdown"
-    ).textContent =
+  document.getElementById("rentReliefBreakdown").textContent =
     naira(annualRentRelief);
 
-    document.getElementById(
-        "taxBreakdown"
-    ).textContent =
-    naira(annualPAYE);
+  document.getElementById("taxBreakdown").textContent = naira(annualPAYE);
 
-    document.getElementById(
-        "netBreakdown"
-    ).textContent =
-    naira(annualNet);
+  document.getElementById("netBreakdown").textContent = naira(annualNet);
 
-    // ===================================
-    // PIE CHART
-    // ===================================
+  // CHARTS
+  updateCharts({
+    annualIncome,
+    annualPAYE,
+    annualPension,
+    annualRentRelief,
+    annualDeductions,
+    annualNet,
+  });
 
-    if(pieChart){
-        pieChart.destroy();
+  // SAVE LOCAL (for quick dashboard preview)
+  localStorage.setItem(
+    "taxeaseUser",
+    JSON.stringify({
+      profileType: profileType.value,
+      annualIncome,
+      annualPAYE,
+      annualNet,
+    }),
+  );
+}
+
+// ===================================
+// CHARTS
+// ===================================
+
+function updateCharts(data) {
+  if (pieChart) pieChart.destroy();
+  if (barChart) barChart.destroy();
+
+  pieChart = new Chart(document.getElementById("taxPieChart"), {
+    type: "pie",
+    data: {
+      labels: ["PAYE", "Pension", "Rent Relief", "Net Income"],
+      datasets: [
+        {
+          data: [
+            data.annualPAYE,
+            data.annualPension,
+            data.annualRentRelief,
+            data.annualNet,
+          ],
+        },
+      ],
+    },
+  });
+
+  barChart = new Chart(document.getElementById("incomeBarChart"), {
+    type: "bar",
+    data: {
+      labels: ["Income", "Rent Relief", "PAYE", "Deductions", "Net"],
+      datasets: [
+        {
+          label: "Annual Amount (₦)",
+          data: [
+            data.annualIncome,
+            data.annualRentRelief,
+            data.annualPAYE,
+            data.annualDeductions,
+            data.annualNet,
+          ],
+        },
+      ],
+    },
+  });
+}
+
+// ===================================
+// SAVE TO BACKEND
+// ===================================
+
+async function saveCalculation() {
+  try {
+    const payload = collectPayload();
+
+    const res = await fetch(`${API_BASE}/save`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Save failed");
     }
 
-    pieChart = new Chart(
+    alert("Calculation saved successfully");
+  } catch (error) {
+    alert(error.message);
+    console.error(error);
+  }
+}
 
-        document.getElementById(
-            "taxPieChart"
-        ),
-
-        {
-
-            type:"pie",
-
-            data:{
-
-                labels:[
-
-                    "PAYE",
-                    "Pension",
-                    "Rent Relief",
-                    "Net Income"
-
-                ],
-
-                datasets:[{
-
-                    data:[
-
-                        annualPAYE,
-                        annualPension,
-                        annualRentRelief,
-                        annualNet
-
-                    ]
-
-                }]
-
-            }
-
-        }
-
-    );
-
-    // ===================================
-    // BAR CHART
-    // ===================================
-
-    if(barChart){
-        barChart.destroy();
-    }
-
-    barChart = new Chart(
-
-        document.getElementById(
-            "incomeBarChart"
-        ),
-
-        {
-
-            type:"bar",
-
-            data:{
-
-                labels:[
-
-                    "Income",
-                    "Rent Relief",
-                    "PAYE",
-                    "Deductions",
-                    "Net"
-
-                ],
-
-                datasets:[{
-
-                    label:
-                    "Annual Amount (₦)",
-
-                    data:[
-
-                        annualIncome,
-                        annualRentRelief,
-                        annualPAYE,
-                        annualDeductions,
-                        annualNet
-
-                    ]
-
-                }]
-
-            }
-
-        }
-
-    );
-
-    // ===================================
-    // SAVE FOR DASHBOARD
-    // ===================================
-
-    const userData = {
-
-        name:
-        document.getElementById(
-            "fullName"
-        ).value,
-
-        email:
-        document.getElementById(
-            "email"
-        ).value,
-
-        profileType:
-        currentProfile,
-
-        tin:
-        document.getElementById(
-            "tin"
-        ).value,
-
-        annualIncome,
-        annualPension,
-        annualRentRelief,
-        annualPAYE,
-        annualNet
-
-    };
-
-    localStorage.setItem(
-        "taxeaseUser",
-        JSON.stringify(
-            userData
-        )
-    );
+if (saveBtn) {
+  saveBtn.addEventListener("click", saveCalculation);
 }

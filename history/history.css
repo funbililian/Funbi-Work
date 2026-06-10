@@ -31,7 +31,7 @@ body {
   background: var(--card);
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
 }
 
 /* TITLE */
@@ -75,7 +75,8 @@ table {
   overflow: hidden;
 }
 
-th, td {
+th,
+td {
   padding: 14px;
   text-align: center;
   border-bottom: 1px solid var(--border);

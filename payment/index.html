@@ -1,900 +1,1504 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Taxease – Payment</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taxease – Payment</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
 
-:root {
-  --green:       #1a7a3c;
-  --green-hover: #155f30;
-  --green-pale:  #e8f5ed;
-  --green-border:#c3e6cf;
-  --orange:      #e87c1e;
-  --red:         #d93025;
-  --red-pale:    #fdecea;
-  --red-border:  #f5c6c2;
-  --yellow-pale: #fffbeb;
-  --yellow-border:#fde68a;
-  --yellow-text: #92400e;
-  --text:        #111827;
-  --muted:       #6b7280;
-  --border:      #e5e7eb;
-  --bg:          #f3f4f6;
-  --white:       #ffffff;
-  --radius-sm:   8px;
-  --radius:      12px;
-  --radius-lg:   16px;
-}
+      :root {
+        --green: #1a7a3c;
+        --green-hover: #155f30;
+        --green-pale: #e8f5ed;
+        --green-border: #c3e6cf;
+        --orange: #e87c1e;
+        --red: #d93025;
+        --red-pale: #fdecea;
+        --red-border: #f5c6c2;
+        --yellow-pale: #fffbeb;
+        --yellow-border: #fde68a;
+        --yellow-text: #92400e;
+        --text: #111827;
+        --muted: #6b7280;
+        --border: #e5e7eb;
+        --bg: #f3f4f6;
+        --white: #ffffff;
+        --radius-sm: 8px;
+        --radius: 12px;
+        --radius-lg: 16px;
+      }
 
-html, body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  font-size: 16px;
-  line-height: 1.5;
-}
+      html,
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        font-size: 16px;
+        line-height: 1.5;
+      }
 
-/* ─── Layout shell ─────────────────────────── */
-.shell {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
+      /* ─── Layout shell ─────────────────────────── */
+      .shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
 
-/* Top app bar */
-.app-bar {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 0 16px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-}
-.app-bar-back {
-  background: none; border: none; cursor: pointer;
-  color: var(--green); display: flex; align-items: center;
-  padding: 8px; margin: -8px; border-radius: var(--radius-sm);
-  transition: background .15s;
-}
-.app-bar-back:hover { background: var(--green-pale); }
-.app-bar-back svg { width: 22px; height: 22px; }
-.app-bar-title {
-  font-size: 18px; font-weight: 700; color: var(--green); flex: 1;
-}
+      /* Top app bar */
+      .app-bar {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 0 16px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .app-bar-back {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--green);
+        display: flex;
+        align-items: center;
+        padding: 8px;
+        margin: -8px;
+        border-radius: var(--radius-sm);
+        transition: background 0.15s;
+      }
+      .app-bar-back:hover {
+        background: var(--green-pale);
+      }
+      .app-bar-back svg {
+        width: 22px;
+        height: 22px;
+      }
+      .app-bar-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--green);
+        flex: 1;
+      }
 
-/* Content area */
-.content {
-  flex: 1;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px 16px 80px;
-}
+      /* Content area */
+      .content {
+        flex: 1;
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px 16px 80px;
+      }
 
-/* Progress bar */
-.progress {
-  display: flex; gap: 5px; margin-bottom: 24px;
-}
-.step {
-  flex: 1; height: 4px; border-radius: 99px;
-  background: var(--border); transition: background .4s;
-}
-.step.on { background: var(--orange); }
+      /* Progress bar */
+      .progress {
+        display: flex;
+        gap: 5px;
+        margin-bottom: 24px;
+      }
+      .step {
+        flex: 1;
+        height: 4px;
+        border-radius: 99px;
+        background: var(--border);
+        transition: background 0.4s;
+      }
+      .step.on {
+        background: var(--orange);
+      }
 
-/* ─── Pages ────────────────────────────────── */
-.page { display: none; }
-.page.active {
-  display: block;
-  animation: fadeUp .22s ease both;
-}
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+      /* ─── Pages ────────────────────────────────── */
+      .page {
+        display: none;
+      }
+      .page.active {
+        display: block;
+        animation: fadeUp 0.22s ease both;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-/* ─── Cards / surfaces ─────────────────────── */
-.card {
-  background: var(--white);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 16px;
-  margin-bottom: 16px;
-}
+      /* ─── Cards / surfaces ─────────────────────── */
+      .card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        padding: 16px;
+        margin-bottom: 16px;
+      }
 
-/* ─── Summary strip ────────────────────────── */
-.summary {
-  background: var(--green-pale);
-  border: 1px solid var(--green-border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-  gap: 12px;
-}
-.summary-left .lbl  { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
-.summary-left .sub  { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.summary-amt {
-  font-size: 20px; font-weight: 700; color: var(--green);
-  font-family: 'DM Mono', monospace; white-space: nowrap;
-}
+      /* ─── Summary strip ────────────────────────── */
+      .summary {
+        background: var(--green-pale);
+        border: 1px solid var(--green-border);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        gap: 12px;
+      }
+      .summary-left .lbl {
+        font-size: 12px;
+        color: var(--muted);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .summary-left .sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .summary-amt {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--green);
+        font-family: "DM Mono", monospace;
+        white-space: nowrap;
+      }
 
-/* ─── Form elements ────────────────────────── */
-.field { margin-bottom: 14px; }
-.field-label {
-  display: block;
-  font-size: 12px; font-weight: 700; color: var(--muted);
-  text-transform: uppercase; letter-spacing: .05em;
-  margin-bottom: 6px;
-}
-.input-wrap {
-  display: flex;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  background: var(--white);
-  transition: border-color .2s;
-}
-.input-wrap:focus-within { border-color: var(--green); }
-.input-prefix {
-  padding: 13px 14px;
-  background: var(--green-pale);
-  font-weight: 700; font-size: 14px; color: var(--green);
-  border-right: 1.5px solid var(--border);
-  flex-shrink: 0; white-space: nowrap;
-}
-.input-wrap input {
-  flex: 1; padding: 13px 14px;
-  border: none; outline: none;
-  font-family: 'DM Mono', monospace;
-  font-size: 16px; font-weight: 600; color: var(--text);
-  background: transparent; min-width: 0;
-}
-.base-input {
-  width: 100%; padding: 13px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  font-family: inherit; font-size: 15px;
-  color: var(--text); background: var(--white);
-  outline: none; transition: border-color .2s;
-  appearance: none; -webkit-appearance: none;
-}
-.base-input:focus { border-color: var(--green); }
-.base-input.mono  { font-family: 'DM Mono', monospace; font-size: 14px; }
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+      /* ─── Form elements ────────────────────────── */
+      .field {
+        margin-bottom: 14px;
+      }
+      .field-label {
+        display: block;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 6px;
+      }
+      .input-wrap {
+        display: flex;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        background: var(--white);
+        transition: border-color 0.2s;
+      }
+      .input-wrap:focus-within {
+        border-color: var(--green);
+      }
+      .input-prefix {
+        padding: 13px 14px;
+        background: var(--green-pale);
+        font-weight: 700;
+        font-size: 14px;
+        color: var(--green);
+        border-right: 1.5px solid var(--border);
+        flex-shrink: 0;
+        white-space: nowrap;
+      }
+      .input-wrap input {
+        flex: 1;
+        padding: 13px 14px;
+        border: none;
+        outline: none;
+        font-family: "DM Mono", monospace;
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+        background: transparent;
+        min-width: 0;
+      }
+      .base-input {
+        width: 100%;
+        padding: 13px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        font-family: inherit;
+        font-size: 15px;
+        color: var(--text);
+        background: var(--white);
+        outline: none;
+        transition: border-color 0.2s;
+        appearance: none;
+        -webkit-appearance: none;
+      }
+      .base-input:focus {
+        border-color: var(--green);
+      }
+      .base-input.mono {
+        font-family: "DM Mono", monospace;
+        font-size: 14px;
+      }
+      .two-col {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
 
-/* ─── Option list ──────────────────────────── */
-.option-list { border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--border); background: var(--white); margin-bottom: 16px; }
-.option-item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 16px;
-  border-bottom: 1px solid var(--border);
-  cursor: pointer;
-  transition: background .15s;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-.option-item:last-child { border-bottom: none; }
-.option-item:active { background: var(--green-pale); }
-.option-item .opt-label { font-size: 15px; font-weight: 600; }
-.option-item .opt-icon  { font-size: 20px; margin-right: 12px; }
-.opt-left { display: flex; align-items: center; }
-.radio {
-  width: 22px; height: 22px; border-radius: 50%;
-  border: 2px solid var(--green);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; transition: background .2s, border-color .2s;
-}
-.radio.on { background: var(--green); }
-.radio.on::after {
-  content: '';
-  width: 5px; height: 9px;
-  border: 2.5px solid #fff;
-  border-top: none; border-left: none;
-  transform: rotate(45deg) translateY(-1px);
-}
+      /* ─── Option list ──────────────────────────── */
+      .option-list {
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--white);
+        margin-bottom: 16px;
+      }
+      .option-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        transition: background 0.15s;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .option-item:last-child {
+        border-bottom: none;
+      }
+      .option-item:active {
+        background: var(--green-pale);
+      }
+      .option-item .opt-label {
+        font-size: 15px;
+        font-weight: 600;
+      }
+      .option-item .opt-icon {
+        font-size: 20px;
+        margin-right: 12px;
+      }
+      .opt-left {
+        display: flex;
+        align-items: center;
+      }
+      .radio {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        border: 2px solid var(--green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition:
+          background 0.2s,
+          border-color 0.2s;
+      }
+      .radio.on {
+        background: var(--green);
+      }
+      .radio.on::after {
+        content: "";
+        width: 5px;
+        height: 9px;
+        border: 2.5px solid #fff;
+        border-top: none;
+        border-left: none;
+        transform: rotate(45deg) translateY(-1px);
+      }
 
-/* ─── Bank info card ───────────────────────── */
-.info-block { margin-bottom: 16px; }
-.info-row {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  font-size: 14px; gap: 12px;
-}
-.info-row:last-child { border-bottom: none; }
-.info-key { color: var(--muted); font-weight: 500; flex-shrink: 0; }
-.info-val {
-  font-weight: 700; font-family: 'DM Mono', monospace;
-  font-size: 13px; display: flex; align-items: center; gap: 8px;
-  word-break: break-all; text-align: right;
-}
-.copy-btn {
-  background: none; border: none; cursor: pointer;
-  color: var(--green); padding: 4px; border-radius: 4px;
-  display: flex; align-items: center; flex-shrink: 0;
-  transition: background .15s;
-}
-.copy-btn:hover { background: var(--green-pale); }
-.copy-btn svg { width: 14px; height: 14px; }
+      /* ─── Bank info card ───────────────────────── */
+      .info-block {
+        margin-bottom: 16px;
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+        gap: 12px;
+      }
+      .info-row:last-child {
+        border-bottom: none;
+      }
+      .info-key {
+        color: var(--muted);
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+      .info-val {
+        font-weight: 700;
+        font-family: "DM Mono", monospace;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        word-break: break-all;
+        text-align: right;
+      }
+      .copy-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--green);
+        padding: 4px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+        transition: background 0.15s;
+      }
+      .copy-btn:hover {
+        background: var(--green-pale);
+      }
+      .copy-btn svg {
+        width: 14px;
+        height: 14px;
+      }
 
-/* ─── Notice box ───────────────────────────── */
-.notice {
-  background: var(--yellow-pale);
-  border: 1px solid var(--yellow-border);
-  border-radius: var(--radius);
-  padding: 12px 14px;
-  font-size: 13px; color: var(--yellow-text); line-height: 1.6;
-  margin-bottom: 16px;
-}
-.notice strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 3px; }
+      /* ─── Notice box ───────────────────────────── */
+      .notice {
+        background: var(--yellow-pale);
+        border: 1px solid var(--yellow-border);
+        border-radius: var(--radius);
+        padding: 12px 14px;
+        font-size: 13px;
+        color: var(--yellow-text);
+        line-height: 1.6;
+        margin-bottom: 16px;
+      }
+      .notice strong {
+        display: block;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 3px;
+      }
 
-/* ─── Wallet grid ──────────────────────────── */
-.wallet-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 16px;
-}
-.wallet-card {
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px 12px;
-  text-align: center; cursor: pointer;
-  transition: border-color .2s, background .2s;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-.wallet-card:active,
-.wallet-card.on { border-color: var(--green); background: var(--green-pale); }
-.wallet-card .w-icon { font-size: 26px; margin-bottom: 6px; }
-.wallet-card .w-name { font-size: 13px; font-weight: 700; }
+      /* ─── Wallet grid ──────────────────────────── */
+      .wallet-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .wallet-card {
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px 12px;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+      .wallet-card:active,
+      .wallet-card.on {
+        border-color: var(--green);
+        background: var(--green-pale);
+      }
+      .wallet-card .w-icon {
+        font-size: 26px;
+        margin-bottom: 6px;
+      }
+      .wallet-card .w-name {
+        font-size: 13px;
+        font-weight: 700;
+      }
 
-/* ─── Installment plans ────────────────────── */
-.plan-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
-.plan-card {
-  border: 1.5px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-.plan-card:active,
-.plan-card.on { border-color: var(--green); background: var(--green-pale); }
-.plan-title { font-size: 15px; font-weight: 700; }
-.plan-sub   { font-size: 12px; color: var(--muted); margin-top: 2px; }
-.plan-amt   { font-size: 15px; font-weight: 700; color: var(--green); font-family: 'DM Mono', monospace; text-align: right; white-space: nowrap; }
-.plan-freq  { font-size: 11px; color: var(--muted); text-align: right; }
+      /* ─── Installment plans ────────────────────── */
+      .plan-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+      .plan-card {
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        cursor: pointer;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+      .plan-card:active,
+      .plan-card.on {
+        border-color: var(--green);
+        background: var(--green-pale);
+      }
+      .plan-title {
+        font-size: 15px;
+        font-weight: 700;
+      }
+      .plan-sub {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .plan-amt {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--green);
+        font-family: "DM Mono", monospace;
+        text-align: right;
+        white-space: nowrap;
+      }
+      .plan-freq {
+        font-size: 11px;
+        color: var(--muted);
+        text-align: right;
+      }
 
-/* ─── Buttons ──────────────────────────────── */
-.btn {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 100%; padding: 15px 16px;
-  border-radius: var(--radius);
-  font-family: inherit; font-size: 16px; font-weight: 700;
-  cursor: pointer; border: none;
-  transition: background .2s, transform .1s, opacity .2s;
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-}
-.btn:active { transform: scale(.98); }
-.btn-green  { background: var(--green); color: #fff; }
-.btn-green:hover { background: var(--green-hover); }
-.btn-green.dim { opacity: .45; }
-.btn-outline {
-  background: transparent; color: var(--text);
-  border: 1.5px solid var(--border);
-}
-.btn-outline:hover { border-color: var(--green); color: var(--green); }
-.btn-outline-green {
-  background: transparent; color: var(--green);
-  border: 1.5px solid var(--green);
-}
-.btn-outline-green:hover { background: var(--green-pale); }
-.btn-stack { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+      /* ─── Buttons ──────────────────────────────── */
+      .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 15px 16px;
+        border-radius: var(--radius);
+        font-family: inherit;
+        font-size: 16px;
+        font-weight: 700;
+        cursor: pointer;
+        border: none;
+        transition:
+          background 0.2s,
+          transform 0.1s,
+          opacity 0.2s;
+        -webkit-tap-highlight-color: transparent;
+        user-select: none;
+      }
+      .btn:active {
+        transform: scale(0.98);
+      }
+      .btn-green {
+        background: var(--green);
+        color: #fff;
+      }
+      .btn-green:hover {
+        background: var(--green-hover);
+      }
+      .btn-green.dim {
+        opacity: 0.45;
+      }
+      .btn-outline {
+        background: transparent;
+        color: var(--text);
+        border: 1.5px solid var(--border);
+      }
+      .btn-outline:hover {
+        border-color: var(--green);
+        color: var(--green);
+      }
+      .btn-outline-green {
+        background: transparent;
+        color: var(--green);
+        border: 1.5px solid var(--green);
+      }
+      .btn-outline-green:hover {
+        background: var(--green-pale);
+      }
+      .btn-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 16px;
+      }
 
-/* ─── Processing ───────────────────────────── */
-.center {
-  display: flex; flex-direction: column; align-items: center;
-  justify-content: center; text-align: center;
-  padding: 60px 16px 40px; min-height: 50vh;
-}
-.spinner {
-  width: 60px; height: 60px;
-  border: 4px solid var(--green-pale);
-  border-top-color: var(--green);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 24px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.center-title { font-size: 20px; font-weight: 700; color: var(--green); margin-bottom: 10px; }
-.center-sub   { font-size: 14px; color: var(--muted); line-height: 1.7; max-width: 280px; }
+      /* ─── Processing ───────────────────────────── */
+      .center {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 60px 16px 40px;
+        min-height: 50vh;
+      }
+      .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid var(--green-pale);
+        border-top-color: var(--green);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 24px;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .center-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--green);
+        margin-bottom: 10px;
+      }
+      .center-sub {
+        font-size: 14px;
+        color: var(--muted);
+        line-height: 1.7;
+        max-width: 280px;
+      }
 
-/* ─── Badge ────────────────────────────────── */
-.badge {
-  width: 60px; height: 60px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 12px;
-  animation: pop .4s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
-.badge-green { background: var(--green); }
-.badge-red   { background: var(--red); }
-.badge svg   { width: 28px; height: 28px; color: #fff; }
+      /* ─── Badge ────────────────────────────────── */
+      .badge {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 12px;
+        animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes pop {
+        from {
+          transform: scale(0);
+        }
+        to {
+          transform: scale(1);
+        }
+      }
+      .badge-green {
+        background: var(--green);
+      }
+      .badge-red {
+        background: var(--red);
+      }
+      .badge svg {
+        width: 28px;
+        height: 28px;
+        color: #fff;
+      }
 
-/* ─── Success ──────────────────────────────── */
-.success-head {
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center; padding: 24px 0 8px;
-}
-.success-title { font-size: 20px; font-weight: 700; color: var(--green); margin-bottom: 4px; }
-.success-sub   { font-size: 13px; color: var(--muted); margin-bottom: 20px; }
+      /* ─── Success ──────────────────────────────── */
+      .success-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 24px 0 8px;
+      }
+      .success-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--green);
+        margin-bottom: 4px;
+      }
+      .success-sub {
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 20px;
+      }
 
-.receipt-card {
-  background: var(--white); border: 1px solid var(--border);
-  border-radius: var(--radius-lg); margin-bottom: 16px; overflow: hidden;
-}
-.receipt-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  padding: 11px 16px;
-  border-bottom: 1px dashed var(--border);
-  font-size: 14px; gap: 12px;
-}
-.receipt-row:last-child { border-bottom: none; }
-.r-key { color: var(--muted); font-weight: 500; flex-shrink: 0; }
-.r-val { font-weight: 700; font-family: 'DM Mono', monospace; font-size: 13px; text-align: right; word-break: break-all; }
-.r-val.green { color: var(--green); font-size: 14px; }
+      .receipt-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        margin-bottom: 16px;
+        overflow: hidden;
+      }
+      .receipt-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding: 11px 16px;
+        border-bottom: 1px dashed var(--border);
+        font-size: 14px;
+        gap: 12px;
+      }
+      .receipt-row:last-child {
+        border-bottom: none;
+      }
+      .r-key {
+        color: var(--muted);
+        font-weight: 500;
+        flex-shrink: 0;
+      }
+      .r-val {
+        font-weight: 700;
+        font-family: "DM Mono", monospace;
+        font-size: 13px;
+        text-align: right;
+        word-break: break-all;
+      }
+      .r-val.green {
+        color: var(--green);
+        font-size: 14px;
+      }
 
-/* ─── Failed ───────────────────────────────── */
-.fail-title { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
-.fail-sub   { font-size: 14px; color: var(--muted); margin-bottom: 16px; line-height: 1.6; }
-.error-box  {
-  width: 100%; background: var(--red-pale);
-  border: 1px solid var(--red-border);
-  border-radius: var(--radius); padding: 14px 16px;
-  text-align: left; margin-bottom: 8px;
-}
-.err-lbl { font-size: 11px; font-weight: 700; color: var(--red); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
-.err-msg { font-size: 13px; color: #a0281e; font-family: 'DM Mono', monospace; line-height: 1.5; }
+      /* ─── Failed ───────────────────────────────── */
+      .fail-title {
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+      .fail-sub {
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 16px;
+        line-height: 1.6;
+      }
+      .error-box {
+        width: 100%;
+        background: var(--red-pale);
+        border: 1px solid var(--red-border);
+        border-radius: var(--radius);
+        padding: 14px 16px;
+        text-align: left;
+        margin-bottom: 8px;
+      }
+      .err-lbl {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--red);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 4px;
+      }
+      .err-msg {
+        font-size: 13px;
+        color: #a0281e;
+        font-family: "DM Mono", monospace;
+        line-height: 1.5;
+      }
 
-/* ─── Toast ────────────────────────────────── */
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
-  background: #1f2937; color: #fff;
-  padding: 12px 20px; border-radius: 99px;
-  font-size: 14px; font-weight: 600;
-  white-space: nowrap; z-index: 999;
-  transition: transform .3s cubic-bezier(.34,1.56,.64,1), opacity .3s;
-  opacity: 0; pointer-events: none;
-}
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+      /* ─── Toast ────────────────────────────────── */
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%) translateY(80px);
+        background: #1f2937;
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 99px;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        z-index: 999;
+        transition:
+          transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+          opacity 0.3s;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .toast.show {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
 
-/* ─── Section label ────────────────────────── */
-.section-label {
-  font-size: 13px; font-weight: 700; color: var(--muted);
-  text-transform: uppercase; letter-spacing: .05em;
-  margin-bottom: 10px; margin-top: 4px;
-}
+      /* ─── Section label ────────────────────────── */
+      .section-label {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 10px;
+        margin-top: 4px;
+      }
 
-/* ─── Responsive ───────────────────────────── */
-@media (min-width: 480px) {
-  .app-bar { padding: 0 24px; height: 60px; }
-  .content { padding: 28px 24px 80px; }
-  .wallet-grid { grid-template-columns: repeat(4, 1fr); }
-  .summary-amt { font-size: 22px; }
-}
+      /* ─── Responsive ───────────────────────────── */
+      @media (min-width: 480px) {
+        .app-bar {
+          padding: 0 24px;
+          height: 60px;
+        }
+        .content {
+          padding: 28px 24px 80px;
+        }
+        .wallet-grid {
+          grid-template-columns: repeat(4, 1fr);
+        }
+        .summary-amt {
+          font-size: 22px;
+        }
+      }
 
-@media (min-width: 768px) {
-  .app-bar { padding: 0 32px; }
-  .content { padding: 36px 32px 80px; max-width: 640px; }
-  .card { padding: 24px; }
-  .two-col { gap: 16px; }
-}
+      @media (min-width: 768px) {
+        .app-bar {
+          padding: 0 32px;
+        }
+        .content {
+          padding: 36px 32px 80px;
+          max-width: 640px;
+        }
+        .card {
+          padding: 24px;
+        }
+        .two-col {
+          gap: 16px;
+        }
+      }
 
-@media (min-width: 1024px) {
-  .content { padding: 48px 40px 80px; }
-  .app-bar { padding: 0 48px; }
-}
-</style>
-</head>
-<body>
+      @media (min-width: 1024px) {
+        .content {
+          padding: 48px 40px 80px;
+        }
+        .app-bar {
+          padding: 0 48px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <!-- App bar -->
+      <header class="app-bar" id="app-bar">
+        <button class="app-bar-back" id="back-btn" onclick="handleBack()">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <span class="app-bar-title" id="app-bar-title">Payment</span>
+      </header>
 
-<div class="shell">
-
-  <!-- App bar -->
-  <header class="app-bar" id="app-bar">
-    <button class="app-bar-back" id="back-btn" onclick="handleBack()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <span class="app-bar-title" id="app-bar-title">Payment</span>
-  </header>
-
-  <main class="content">
-
-    <!-- ══════════════════════════
+      <main class="content">
+        <!-- ══════════════════════════
          PAGE: SELECT METHOD
     ══════════════════════════ -->
-    <div class="page active" id="page-select">
+        <div class="page active" id="page-select">
+          <div class="progress">
+            <div class="step on"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+          </div>
 
-      <div class="progress">
-        <div class="step on"></div>
-        <div class="step"></div>
-        <div class="step"></div>
-        <div class="step"></div>
-      </div>
+          <div class="summary">
+            <div class="summary-left">
+              <div class="lbl">Amount Due</div>
+              <div class="sub" id="sel-period">—</div>
+            </div>
+            <div class="summary-amt" id="sel-amount">NGN 0.00</div>
+          </div>
 
-      <div class="summary">
-        <div class="summary-left">
-          <div class="lbl">Amount Due</div>
-          <div class="sub" id="sel-period">—</div>
-        </div>
-        <div class="summary-amt" id="sel-amount">NGN 0.00</div>
-      </div>
+          <div class="card">
+            <div class="field">
+              <label class="field-label">Enter amount</label>
+              <div class="input-wrap">
+                <span class="input-prefix">NGN</span>
+                <input
+                  type="number"
+                  id="amount-input"
+                  placeholder="0.00"
+                  inputmode="decimal"
+                  oninput="onAmountInput(this.value)"
+                />
+              </div>
+            </div>
+          </div>
 
-      <div class="card">
-        <div class="field">
-          <label class="field-label">Enter amount</label>
-          <div class="input-wrap">
-            <span class="input-prefix">NGN</span>
-            <input type="number" id="amount-input" placeholder="0.00" inputmode="decimal" oninput="onAmountInput(this.value)" />
+          <div class="section-label">Select payment method</div>
+          <div class="option-list">
+            <div class="option-item" onclick="selectMethod(this, 'card')">
+              <div class="opt-left">
+                <span class="opt-icon">💳</span>
+                <span class="opt-label">Card Payment</span>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="option-item" onclick="selectMethod(this, 'bank')">
+              <div class="opt-left">
+                <span class="opt-icon">🏦</span>
+                <span class="opt-label">Bank Transfer</span>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div class="option-item" onclick="selectMethod(this, 'wallet')">
+              <div class="opt-left">
+                <span class="opt-icon">📱</span>
+                <span class="opt-label">Digital Wallet</span>
+              </div>
+              <div class="radio"></div>
+            </div>
+            <div
+              class="option-item"
+              onclick="selectMethod(this, 'installment')"
+            >
+              <div class="opt-left">
+                <span class="opt-icon">📅</span>
+                <span class="opt-label">Installment Plan</span>
+              </div>
+              <div class="radio"></div>
+            </div>
+          </div>
+
+          <div class="btn-stack">
+            <button
+              class="btn btn-green dim"
+              id="next-btn"
+              onclick="goToDetails()"
+            >
+              Next
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <polyline points="9 6 15 12 9 18" />
+              </svg>
+            </button>
           </div>
         </div>
-      </div>
 
-      <div class="section-label">Select payment method</div>
-      <div class="option-list">
-        <div class="option-item" onclick="selectMethod(this,'card')">
-          <div class="opt-left">
-            <span class="opt-icon">💳</span>
-            <span class="opt-label">Card Payment</span>
-          </div>
-          <div class="radio"></div>
-        </div>
-        <div class="option-item" onclick="selectMethod(this,'bank')">
-          <div class="opt-left">
-            <span class="opt-icon">🏦</span>
-            <span class="opt-label">Bank Transfer</span>
-          </div>
-          <div class="radio"></div>
-        </div>
-        <div class="option-item" onclick="selectMethod(this,'wallet')">
-          <div class="opt-left">
-            <span class="opt-icon">📱</span>
-            <span class="opt-label">Digital Wallet</span>
-          </div>
-          <div class="radio"></div>
-        </div>
-        <div class="option-item" onclick="selectMethod(this,'installment')">
-          <div class="opt-left">
-            <span class="opt-icon">📅</span>
-            <span class="opt-label">Installment Plan</span>
-          </div>
-          <div class="radio"></div>
-        </div>
-      </div>
-
-      <div class="btn-stack">
-        <button class="btn btn-green dim" id="next-btn" onclick="goToDetails()">
-          Next
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="9 6 15 12 9 18"/></svg>
-        </button>
-      </div>
-
-    </div>
-
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: CARD PAYMENT
     ══════════════════════════ -->
-    <div class="page" id="page-card">
-
-      <div class="progress">
-        <div class="step on"></div>
-        <div class="step on"></div>
-        <div class="step"></div>
-        <div class="step"></div>
-      </div>
-
-      <div class="summary">
-        <div class="summary-left"><div class="lbl">Amount to Pay</div></div>
-        <div class="summary-amt" id="card-amount">NGN 0.00</div>
-      </div>
-
-      <div class="card">
-        <div class="field">
-          <label class="field-label">Card Number</label>
-          <input class="base-input mono" type="text" placeholder="0000 0000 0000 0000" maxlength="19" oninput="fmtCard(this)" inputmode="numeric" />
-        </div>
-        <div class="field">
-          <label class="field-label">Cardholder Name</label>
-          <input class="base-input" type="text" placeholder="Name on card" autocomplete="cc-name" />
-        </div>
-        <div class="two-col">
-          <div class="field">
-            <label class="field-label">Expiry</label>
-            <input class="base-input mono" type="text" placeholder="MM / YY" maxlength="7" oninput="fmtExpiry(this)" inputmode="numeric" />
+        <div class="page" id="page-card">
+          <div class="progress">
+            <div class="step on"></div>
+            <div class="step on"></div>
+            <div class="step"></div>
+            <div class="step"></div>
           </div>
-          <div class="field">
-            <label class="field-label">CVV</label>
-            <input class="base-input mono" type="password" placeholder="•••" maxlength="4" inputmode="numeric" />
+
+          <div class="summary">
+            <div class="summary-left"><div class="lbl">Amount to Pay</div></div>
+            <div class="summary-amt" id="card-amount">NGN 0.00</div>
+          </div>
+
+          <div class="card">
+            <div class="field">
+              <label class="field-label">Card Number</label>
+              <input
+                class="base-input mono"
+                type="text"
+                placeholder="0000 0000 0000 0000"
+                maxlength="19"
+                oninput="fmtCard(this)"
+                inputmode="numeric"
+              />
+            </div>
+            <div class="field">
+              <label class="field-label">Cardholder Name</label>
+              <input
+                class="base-input"
+                type="text"
+                placeholder="Name on card"
+                autocomplete="cc-name"
+              />
+            </div>
+            <div class="two-col">
+              <div class="field">
+                <label class="field-label">Expiry</label>
+                <input
+                  class="base-input mono"
+                  type="text"
+                  placeholder="MM / YY"
+                  maxlength="7"
+                  oninput="fmtExpiry(this)"
+                  inputmode="numeric"
+                />
+              </div>
+              <div class="field">
+                <label class="field-label">CVV</label>
+                <input
+                  class="base-input mono"
+                  type="password"
+                  placeholder="•••"
+                  maxlength="4"
+                  inputmode="numeric"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-stack">
+            <button class="btn btn-green" onclick="submitPayment()">
+              Pay Now
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </button>
+            <button class="btn btn-outline" onclick="showPage('select')">
+              Back
+            </button>
           </div>
         </div>
-      </div>
 
-      <div class="btn-stack">
-        <button class="btn btn-green" onclick="submitPayment()">
-          Pay Now
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </button>
-        <button class="btn btn-outline" onclick="showPage('select')">Back</button>
-      </div>
-
-    </div>
-
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: BANK TRANSFER
     ══════════════════════════ -->
-    <div class="page" id="page-bank">
+        <div class="page" id="page-bank">
+          <div class="progress">
+            <div class="step on"></div>
+            <div class="step on"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+          </div>
 
-      <div class="progress">
-        <div class="step on"></div>
-        <div class="step on"></div>
-        <div class="step"></div>
-        <div class="step"></div>
-      </div>
+          <div class="summary">
+            <div class="summary-left">
+              <div class="lbl">Amount to Transfer</div>
+            </div>
+            <div class="summary-amt" id="bank-amount">NGN 0.00</div>
+          </div>
 
-      <div class="summary">
-        <div class="summary-left"><div class="lbl">Amount to Transfer</div></div>
-        <div class="summary-amt" id="bank-amount">NGN 0.00</div>
-      </div>
+          <div class="notice">
+            <strong>⚠ Important</strong>
+            Transfer the exact amount shown and use the reference below. Your
+            payment will be confirmed once received.
+          </div>
 
-      <div class="notice">
-        <strong>⚠ Important</strong>
-        Transfer the exact amount shown and use the reference below. Your payment will be confirmed once received.
-      </div>
+          <div class="section-label">Bank Account Details</div>
+          <div class="card info-block" style="padding: 0">
+            <div class="info-row">
+              <span class="info-key">Bank Name</span>
+              <span class="info-val">First Bank of Nigeria</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">Account Name</span>
+              <span class="info-val">Taxease Collections</span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">Account No.</span>
+              <span class="info-val">
+                3012345678
+                <button class="copy-btn" onclick="copyText('3012345678', this)">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  >
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path
+                      d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
+                    />
+                  </svg>
+                </button>
+              </span>
+            </div>
+            <div class="info-row">
+              <span class="info-key">Reference</span>
+              <span class="info-val">
+                <span id="bank-ref">TXR-000000</span>
+                <button
+                  class="copy-btn"
+                  onclick="
+                    copyText(
+                      document.getElementById('bank-ref').textContent,
+                      this,
+                    )
+                  "
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  >
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path
+                      d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
+                    />
+                  </svg>
+                </button>
+              </span>
+            </div>
+          </div>
 
-      <div class="section-label">Bank Account Details</div>
-      <div class="card info-block" style="padding:0">
-        <div class="info-row">
-          <span class="info-key">Bank Name</span>
-          <span class="info-val">First Bank of Nigeria</span>
-        </div>
-        <div class="info-row">
-          <span class="info-key">Account Name</span>
-          <span class="info-val">Taxease Collections</span>
-        </div>
-        <div class="info-row">
-          <span class="info-key">Account No.</span>
-          <span class="info-val">
-            3012345678
-            <button class="copy-btn" onclick="copyText('3012345678',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          <div class="btn-stack">
+            <button class="btn btn-green" onclick="submitPayment()">
+              I Have Made the Transfer
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
             </button>
-          </span>
-        </div>
-        <div class="info-row">
-          <span class="info-key">Reference</span>
-          <span class="info-val">
-            <span id="bank-ref">TXR-000000</span>
-            <button class="copy-btn" onclick="copyText(document.getElementById('bank-ref').textContent,this)">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            <button class="btn btn-outline" onclick="showPage('select')">
+              Back
             </button>
-          </span>
+          </div>
         </div>
-      </div>
 
-      <div class="btn-stack">
-        <button class="btn btn-green" onclick="submitPayment()">
-          I Have Made the Transfer
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </button>
-        <button class="btn btn-outline" onclick="showPage('select')">Back</button>
-      </div>
-
-    </div>
-
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: DIGITAL WALLET
     ══════════════════════════ -->
-    <div class="page" id="page-wallet">
+        <div class="page" id="page-wallet">
+          <div class="progress">
+            <div class="step on"></div>
+            <div class="step on"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+          </div>
 
-      <div class="progress">
-        <div class="step on"></div>
-        <div class="step on"></div>
-        <div class="step"></div>
-        <div class="step"></div>
-      </div>
+          <div class="summary">
+            <div class="summary-left"><div class="lbl">Amount to Pay</div></div>
+            <div class="summary-amt" id="wallet-amount">NGN 0.00</div>
+          </div>
 
-      <div class="summary">
-        <div class="summary-left"><div class="lbl">Amount to Pay</div></div>
-        <div class="summary-amt" id="wallet-amount">NGN 0.00</div>
-      </div>
+          <div class="section-label">Choose wallet</div>
+          <div class="wallet-grid">
+            <div class="wallet-card" onclick="pickWallet(this, 'OPay')">
+              <div class="w-icon">💚</div>
+              <div class="w-name">OPay</div>
+            </div>
+            <div class="wallet-card" onclick="pickWallet(this, 'PalmPay')">
+              <div class="w-icon">🌴</div>
+              <div class="w-name">PalmPay</div>
+            </div>
+            <div class="wallet-card" onclick="pickWallet(this, 'Kuda')">
+              <div class="w-icon">🟣</div>
+              <div class="w-name">Kuda</div>
+            </div>
+            <div class="wallet-card" onclick="pickWallet(this, 'Flutterwave')">
+              <div class="w-icon">🦋</div>
+              <div class="w-name">Flutterwave</div>
+            </div>
+          </div>
 
-      <div class="section-label">Choose wallet</div>
-      <div class="wallet-grid">
-        <div class="wallet-card" onclick="pickWallet(this,'OPay')">
-          <div class="w-icon">💚</div>
-          <div class="w-name">OPay</div>
+          <div class="card">
+            <div class="field" style="margin-bottom: 0">
+              <label class="field-label">Wallet Phone Number</label>
+              <input
+                class="base-input mono"
+                type="tel"
+                id="wallet-phone"
+                placeholder="080 0000 0000"
+                inputmode="tel"
+              />
+            </div>
+          </div>
+
+          <div class="btn-stack">
+            <button
+              class="btn btn-green dim"
+              id="wallet-btn"
+              onclick="submitWallet()"
+            >
+              Pay Now
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+            </button>
+            <button class="btn btn-outline" onclick="showPage('select')">
+              Back
+            </button>
+          </div>
         </div>
-        <div class="wallet-card" onclick="pickWallet(this,'PalmPay')">
-          <div class="w-icon">🌴</div>
-          <div class="w-name">PalmPay</div>
-        </div>
-        <div class="wallet-card" onclick="pickWallet(this,'Kuda')">
-          <div class="w-icon">🟣</div>
-          <div class="w-name">Kuda</div>
-        </div>
-        <div class="wallet-card" onclick="pickWallet(this,'Flutterwave')">
-          <div class="w-icon">🦋</div>
-          <div class="w-name">Flutterwave</div>
-        </div>
-      </div>
 
-      <div class="card">
-        <div class="field" style="margin-bottom:0">
-          <label class="field-label">Wallet Phone Number</label>
-          <input class="base-input mono" type="tel" id="wallet-phone" placeholder="080 0000 0000" inputmode="tel" />
-        </div>
-      </div>
-
-      <div class="btn-stack">
-        <button class="btn btn-green dim" id="wallet-btn" onclick="submitWallet()">
-          Pay Now
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-        </button>
-        <button class="btn btn-outline" onclick="showPage('select')">Back</button>
-      </div>
-
-    </div>
-
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: INSTALLMENT PLAN
     ══════════════════════════ -->
-    <div class="page" id="page-installment">
+        <div class="page" id="page-installment">
+          <div class="progress">
+            <div class="step on"></div>
+            <div class="step on"></div>
+            <div class="step"></div>
+            <div class="step"></div>
+          </div>
 
-      <div class="progress">
-        <div class="step on"></div>
-        <div class="step on"></div>
-        <div class="step"></div>
-        <div class="step"></div>
-      </div>
+          <div class="summary">
+            <div class="summary-left"><div class="lbl">Total Amount</div></div>
+            <div class="summary-amt" id="inst-total">NGN 0.00</div>
+          </div>
 
-      <div class="summary">
-        <div class="summary-left"><div class="lbl">Total Amount</div></div>
-        <div class="summary-amt" id="inst-total">NGN 0.00</div>
-      </div>
+          <div class="section-label">Choose a plan</div>
+          <div class="plan-list" id="plan-list"></div>
 
-      <div class="section-label">Choose a plan</div>
-      <div class="plan-list" id="plan-list"></div>
+          <div class="notice">
+            <strong>📋 Note</strong>
+            First instalment is due today. Remaining payments are automatically
+            charged on the same date each month.
+          </div>
 
-      <div class="notice">
-        <strong>📋 Note</strong>
-        First instalment is due today. Remaining payments are automatically charged on the same date each month.
-      </div>
+          <div class="btn-stack">
+            <button
+              class="btn btn-green dim"
+              id="inst-btn"
+              onclick="submitPayment()"
+            >
+              Confirm Plan
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </button>
+            <button class="btn btn-outline" onclick="showPage('select')">
+              Back
+            </button>
+          </div>
+        </div>
 
-      <div class="btn-stack">
-        <button class="btn btn-green dim" id="inst-btn" onclick="submitPayment()">
-          Confirm Plan
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        </button>
-        <button class="btn btn-outline" onclick="showPage('select')">Back</button>
-      </div>
-
-    </div>
-
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: PROCESSING
     ══════════════════════════ -->
-    <div class="page" id="page-processing">
-      <div class="center">
-        <div class="spinner"></div>
-        <div class="center-title">Processing your payment</div>
-        <p class="center-sub">We will confirm your payment attempt soon. Please stay on this page.</p>
-      </div>
-    </div>
+        <div class="page" id="page-processing">
+          <div class="center">
+            <div class="spinner"></div>
+            <div class="center-title">Processing your payment</div>
+            <p class="center-sub">
+              We will confirm your payment attempt soon. Please stay on this
+              page.
+            </p>
+          </div>
+        </div>
 
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: SUCCESS
     ══════════════════════════ -->
-    <div class="page" id="page-success">
+        <div class="page" id="page-success">
+          <div class="progress">
+            <div class="step on"></div>
+            <div class="step on"></div>
+            <div class="step on"></div>
+            <div class="step on"></div>
+          </div>
 
-      <div class="progress">
-        <div class="step on"></div>
-        <div class="step on"></div>
-        <div class="step on"></div>
-        <div class="step on"></div>
-      </div>
+          <div class="success-head">
+            <div class="badge badge-green">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div class="success-title">Payment Successful</div>
+            <div class="success-sub">Tax payment receipt</div>
+          </div>
 
-      <div class="success-head">
-        <div class="badge badge-green">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <div class="receipt-card">
+            <div class="receipt-row">
+              <span class="r-key">Receipt No.</span
+              ><span class="r-val" id="r-no">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Date</span
+              ><span class="r-val" id="r-date">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Paid By</span
+              ><span class="r-val" id="r-paidby">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Amount Paid</span
+              ><span class="r-val green" id="r-amount">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Method</span
+              ><span class="r-val" id="r-method">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Tax Period</span
+              ><span class="r-val" id="r-period">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Tax Type</span
+              ><span class="r-val" id="r-type">—</span>
+            </div>
+            <div class="receipt-row">
+              <span class="r-key">Received By</span
+              ><span class="r-val">Taxease</span>
+            </div>
+          </div>
+
+          <div class="btn-stack">
+            <button class="btn btn-outline-green" onclick="window.print()">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+                stroke-linecap="round"
+              >
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Download Receipt
+            </button>
+            <button class="btn btn-outline" onclick="backToDashboard()">
+              Back to Dashboard
+            </button>
+          </div>
         </div>
-        <div class="success-title">Payment Successful</div>
-        <div class="success-sub">Tax payment receipt</div>
-      </div>
 
-      <div class="receipt-card">
-        <div class="receipt-row"><span class="r-key">Receipt No.</span><span class="r-val" id="r-no">—</span></div>
-        <div class="receipt-row"><span class="r-key">Date</span><span class="r-val" id="r-date">—</span></div>
-        <div class="receipt-row"><span class="r-key">Paid By</span><span class="r-val" id="r-paidby">—</span></div>
-        <div class="receipt-row"><span class="r-key">Amount Paid</span><span class="r-val green" id="r-amount">—</span></div>
-        <div class="receipt-row"><span class="r-key">Method</span><span class="r-val" id="r-method">—</span></div>
-        <div class="receipt-row"><span class="r-key">Tax Period</span><span class="r-val" id="r-period">—</span></div>
-        <div class="receipt-row"><span class="r-key">Tax Type</span><span class="r-val" id="r-type">—</span></div>
-        <div class="receipt-row"><span class="r-key">Received By</span><span class="r-val">Taxease</span></div>
-      </div>
-
-      <div class="btn-stack">
-        <button class="btn btn-outline-green" onclick="window.print()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download Receipt
-        </button>
-        <button class="btn btn-outline" onclick="backToDashboard()">Back to Dashboard</button>
-      </div>
-
-    </div>
-
-    <!-- ══════════════════════════
+        <!-- ══════════════════════════
          PAGE: FAILED
     ══════════════════════════ -->
-    <div class="page" id="page-failed">
-      <div class="center">
-        <div class="badge badge-red">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="17" r=".8" fill="currentColor"/></svg>
+        <div class="page" id="page-failed">
+          <div class="center">
+            <div class="badge badge-red">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+              >
+                <line x1="12" y1="8" x2="12" y2="13" />
+                <circle cx="12" cy="17" r=".8" fill="currentColor" />
+              </svg>
+            </div>
+            <div class="fail-title">Payment Unsuccessful</div>
+            <p class="fail-sub">
+              We couldn't process your payment.<br />Please check your details
+              and try again.
+            </p>
+            <div class="error-box">
+              <div class="err-lbl">Error Message</div>
+              <div class="err-msg" id="err-msg">
+                An error occurred. Please try again.
+              </div>
+            </div>
+            <div class="btn-stack" style="width: 100%">
+              <button class="btn btn-green" onclick="tryAgain()">
+                Try Again
+              </button>
+              <button class="btn btn-outline" onclick="backToDashboard()">
+                Back to Dashboard
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="fail-title">Payment Unsuccessful</div>
-        <p class="fail-sub">We couldn't process your payment.<br>Please check your details and try again.</p>
-        <div class="error-box">
-          <div class="err-lbl">Error Message</div>
-          <div class="err-msg" id="err-msg">An error occurred. Please try again.</div>
-        </div>
-        <div class="btn-stack" style="width:100%">
-          <button class="btn btn-green" onclick="tryAgain()">Try Again</button>
-          <button class="btn btn-outline" onclick="backToDashboard()">Back to Dashboard</button>
-        </div>
-      </div>
+      </main>
     </div>
 
-  </main>
-</div>
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
+    <script>
+      // ── State ──────────────────────────────────────────
+      const S = {
+        amount: 0,
+        currency: "NGN",
+        method: null,
+        wallet: null,
+        plan: null,
+        taxPeriod: "",
+        taxType: "",
+        paidBy: "",
+      };
 
-<script>
-// ── State ──────────────────────────────────────────
-const S = {
-  amount:    0,
-  currency:  'NGN',
-  method:    null,
-  wallet:    null,
-  plan:      null,
-  taxPeriod: '',
-  taxType:   '',
-  paidBy:    '',
-};
+      const PAGE_TITLES = {
+        select: "Payment",
+        card: "Card Payment",
+        bank: "Bank Transfer",
+        wallet: "Digital Wallet",
+        installment: "Installment Plan",
+        processing: "Processing",
+        success: "Receipt",
+        failed: "Payment Failed",
+      };
 
-const PAGE_TITLES = {
-  select:      'Payment',
-  card:        'Card Payment',
-  bank:        'Bank Transfer',
-  wallet:      'Digital Wallet',
-  installment: 'Installment Plan',
-  processing:  'Processing',
-  success:     'Receipt',
-  failed:      'Payment Failed',
-};
+      // ── External API ───────────────────────────────────
+      window.TaxeasePayment = {
+        setData(data) {
+          Object.assign(S, data);
+          refresh();
+        },
+      };
 
-// ── External API ───────────────────────────────────
-window.TaxeasePayment = {
-  setData(data) { Object.assign(S, data); refresh(); }
-};
+      function fmt(n) {
+        return new Intl.NumberFormat("en-NG", {
+          minimumFractionDigits: 2,
+        }).format(n);
+      }
 
-function fmt(n) {
-  return new Intl.NumberFormat('en-NG', { minimumFractionDigits: 2 }).format(n);
-}
+      function refresh() {
+        const a = `${S.currency} ${fmt(S.amount)}`;
+        ["sel", "card", "bank", "wallet", "inst"].forEach((id) => {
+          const el = document.getElementById(
+            id +
+              (id === "sel" ? "-amount" : id === "inst" ? "-total" : "-amount"),
+          );
+          if (el) el.textContent = a;
+        });
+        const p = document.getElementById("sel-period");
+        if (p)
+          p.textContent =
+            [S.taxPeriod, S.taxType].filter(Boolean).join(" · ") || "—";
+        const inp = document.getElementById("amount-input");
+        if (inp && S.amount) inp.value = S.amount;
+        document.getElementById("bank-ref").textContent =
+          "TXR-" +
+          new Date().getFullYear() +
+          "-" +
+          String(Date.now()).slice(-6);
+        buildPlans();
+      }
 
-function refresh() {
-  const a = `${S.currency} ${fmt(S.amount)}`;
-  ['sel','card','bank','wallet','inst'].forEach(id => {
-    const el = document.getElementById(id + (id === 'sel' ? '-amount' : id === 'inst' ? '-total' : '-amount'));
-    if (el) el.textContent = a;
-  });
-  const p = document.getElementById('sel-period');
-  if (p) p.textContent = [S.taxPeriod, S.taxType].filter(Boolean).join(' · ') || '—';
-  const inp = document.getElementById('amount-input');
-  if (inp && S.amount) inp.value = S.amount;
-  document.getElementById('bank-ref').textContent = 'TXR-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-6);
-  buildPlans();
-}
+      function onAmountInput(v) {
+        S.amount = parseFloat(v) || 0;
+        const a = `${S.currency} ${fmt(S.amount)}`;
+        [
+          "sel-amount",
+          "card-amount",
+          "bank-amount",
+          "wallet-amount",
+          "inst-total",
+        ].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = a;
+        });
+        buildPlans();
+      }
 
-function onAmountInput(v) {
-  S.amount = parseFloat(v) || 0;
-  const a = `${S.currency} ${fmt(S.amount)}`;
-  ['sel-amount','card-amount','bank-amount','wallet-amount','inst-total'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = a;
-  });
-  buildPlans();
-}
+      // ── Navigation ─────────────────────────────────────
+      function showPage(name) {
+        document
+          .querySelectorAll(".page")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("page-" + name).classList.add("active");
+        document.getElementById("app-bar-title").textContent =
+          PAGE_TITLES[name] || "Payment";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
 
-// ── Navigation ─────────────────────────────────────
-function showPage(name) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + name).classList.add('active');
-  document.getElementById('app-bar-title').textContent = PAGE_TITLES[name] || 'Payment';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+      function handleBack() {
+        const active = document.querySelector(".page.active");
+        if (!active) return;
+        const id = active.id.replace("page-", "");
+        if (["card", "bank", "wallet", "installment"].includes(id))
+          showPage("select");
+        else if (id === "select") history.back();
+        else showPage("select");
+      }
 
-function handleBack() {
-  const active = document.querySelector('.page.active');
-  if (!active) return;
-  const id = active.id.replace('page-', '');
-  if (['card','bank','wallet','installment'].includes(id)) showPage('select');
-  else if (id === 'select') history.back();
-  else showPage('select');
-}
+      // ── Method selection ───────────────────────────────
+      function selectMethod(el, method) {
+        document
+          .querySelectorAll(".option-item .radio")
+          .forEach((r) => r.classList.remove("on"));
+        el.querySelector(".radio").classList.add("on");
+        S.method = method;
+        const btn = document.getElementById("next-btn");
+        btn.classList.remove("dim");
+      }
 
-// ── Method selection ───────────────────────────────
-function selectMethod(el, method) {
-  document.querySelectorAll('.option-item .radio').forEach(r => r.classList.remove('on'));
-  el.querySelector('.radio').classList.add('on');
-  S.method = method;
-  const btn = document.getElementById('next-btn');
-  btn.classList.remove('dim');
-}
+      function goToDetails() {
+        if (!S.method) {
+          showToast("Please select a payment method");
+          return;
+        }
+        showPage(S.method);
+      }
 
-function goToDetails() {
-  if (!S.method) { showToast('Please select a payment method'); return; }
-  showPage(S.method);
-}
+      // ── Wallet ─────────────────────────────────────────
+      function pickWallet(el, name) {
+        document
+          .querySelectorAll(".wallet-card")
+          .forEach((w) => w.classList.remove("on"));
+        el.classList.add("on");
+        S.wallet = name;
+        document.getElementById("wallet-btn").classList.remove("dim");
+      }
 
-// ── Wallet ─────────────────────────────────────────
-function pickWallet(el, name) {
-  document.querySelectorAll('.wallet-card').forEach(w => w.classList.remove('on'));
-  el.classList.add('on');
-  S.wallet = name;
-  document.getElementById('wallet-btn').classList.remove('dim');
-}
+      function submitWallet() {
+        const phone = document.getElementById("wallet-phone").value.trim();
+        if (!S.wallet) {
+          showToast("Please select a wallet");
+          return;
+        }
+        if (!phone) {
+          showToast("Please enter your phone number");
+          return;
+        }
+        submitPayment();
+      }
 
-function submitWallet() {
-  const phone = document.getElementById('wallet-phone').value.trim();
-  if (!S.wallet) { showToast('Please select a wallet'); return; }
-  if (!phone)    { showToast('Please enter your phone number'); return; }
-  submitPayment();
-}
-
-// ── Installment plans ──────────────────────────────
-function buildPlans() {
-  const total = S.amount;
-  const plans = [
-    { months: 2,  label: '2 Months',  interest: 0    },
-    { months: 3,  label: '3 Months',  interest: 0.02 },
-    { months: 6,  label: '6 Months',  interest: 0.05 },
-    { months: 12, label: '12 Months', interest: 0.10 },
-  ];
-  const container = document.getElementById('plan-list');
-  container.innerHTML = '';
-  plans.forEach(p => {
-    const t = total * (1 + p.interest);
-    const m = t / p.months;
-    const intLabel = p.interest ? `+${(p.interest*100).toFixed(0)}% fee` : 'No interest';
-    const div = document.createElement('div');
-    div.className = 'plan-card';
-    div.innerHTML = `
+      // ── Installment plans ──────────────────────────────
+      function buildPlans() {
+        const total = S.amount;
+        const plans = [
+          { months: 2, label: "2 Months", interest: 0 },
+          { months: 3, label: "3 Months", interest: 0.02 },
+          { months: 6, label: "6 Months", interest: 0.05 },
+          { months: 12, label: "12 Months", interest: 0.1 },
+        ];
+        const container = document.getElementById("plan-list");
+        container.innerHTML = "";
+        plans.forEach((p) => {
+          const t = total * (1 + p.interest);
+          const m = t / p.months;
+          const intLabel = p.interest
+            ? `+${(p.interest * 100).toFixed(0)}% fee`
+            : "No interest";
+          const div = document.createElement("div");
+          div.className = "plan-card";
+          div.innerHTML = `
       <div>
         <div class="plan-title">${p.label}</div>
         <div class="plan-sub">${intLabel} &nbsp;·&nbsp; Total: ${S.currency} ${fmt(t)}</div>
@@ -903,95 +1507,112 @@ function buildPlans() {
         <div class="plan-amt">${S.currency} ${fmt(m)}</div>
         <div class="plan-freq">/ month</div>
       </div>`;
-    div.addEventListener('click', () => {
-      document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('on'));
-      div.classList.add('on');
-      S.plan = p;
-      document.getElementById('inst-btn').classList.remove('dim');
-    });
-    container.appendChild(div);
-  });
-}
+          div.addEventListener("click", () => {
+            document
+              .querySelectorAll(".plan-card")
+              .forEach((c) => c.classList.remove("on"));
+            div.classList.add("on");
+            S.plan = p;
+            document.getElementById("inst-btn").classList.remove("dim");
+          });
+          container.appendChild(div);
+        });
+      }
 
-// ── Card formatters ────────────────────────────────
-function fmtCard(inp) {
-  let v = inp.value.replace(/\D/g,'').slice(0,16);
-  inp.value = v.replace(/(.{4})/g,'$1 ').trim();
-}
-function fmtExpiry(inp) {
-  let v = inp.value.replace(/\D/g,'').slice(0,4);
-  if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
-  inp.value = v;
-}
+      // ── Card formatters ────────────────────────────────
+      function fmtCard(inp) {
+        let v = inp.value.replace(/\D/g, "").slice(0, 16);
+        inp.value = v.replace(/(.{4})/g, "$1 ").trim();
+      }
+      function fmtExpiry(inp) {
+        let v = inp.value.replace(/\D/g, "").slice(0, 4);
+        if (v.length >= 3) v = v.slice(0, 2) + " / " + v.slice(2);
+        inp.value = v;
+      }
 
-// ── Copy ───────────────────────────────────────────
-function copyText(text, btn) {
-  navigator.clipboard.writeText(text).then(() => {
-    const orig = btn.innerHTML;
-    btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>`;
-    showToast('Copied!');
-    setTimeout(() => btn.innerHTML = orig, 2000);
-  });
-}
+      // ── Copy ───────────────────────────────────────────
+      function copyText(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+          const orig = btn.innerHTML;
+          btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>`;
+          showToast("Copied!");
+          setTimeout(() => (btn.innerHTML = orig), 2000);
+        });
+      }
 
-// ── Toast ──────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
+      // ── Toast ──────────────────────────────────────────
+      function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2500);
+      }
 
-// ── Payment flow ───────────────────────────────────
-function submitPayment() {
-  showPage('processing');
-  processPayment().then(r => {
-    if (r.success) onSuccess(r);
-    else onFailed(r.errorMessage);
-  });
-}
+      // ── Payment flow ───────────────────────────────────
+      function submitPayment() {
+        showPage("processing");
+        processPayment().then((r) => {
+          if (r.success) onSuccess(r);
+          else onFailed(r.errorMessage);
+        });
+      }
 
-// Replace with your real API call
-function processPayment() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        success: true,
-        receiptNumber: 'TXR-' + new Date().getFullYear() + '-' + String(Date.now()).slice(-4),
-      });
-    }, 2800);
-  });
-}
+      // Replace with your real API call
+      function processPayment() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              success: true,
+              receiptNumber:
+                "TXR-" +
+                new Date().getFullYear() +
+                "-" +
+                String(Date.now()).slice(-4),
+            });
+          }, 2800);
+        });
+      }
 
-const METHOD_LABELS = {
-  card: 'Card Payment', bank: 'Bank Transfer',
-  wallet: () => `Digital Wallet (${S.wallet || ''})`,
-  installment: () => `Installment – ${S.plan ? S.plan.label : ''}`,
-};
+      const METHOD_LABELS = {
+        card: "Card Payment",
+        bank: "Bank Transfer",
+        wallet: () => `Digital Wallet (${S.wallet || ""})`,
+        installment: () => `Installment – ${S.plan ? S.plan.label : ""}`,
+      };
 
-function onSuccess(r) {
-  const now = new Date();
-  const ml = METHOD_LABELS[S.method];
-  document.getElementById('r-no').textContent     = r.receiptNumber;
-  document.getElementById('r-date').textContent   = now.toLocaleDateString('en-NG', { year:'numeric', month:'long', day:'numeric' });
-  document.getElementById('r-paidby').textContent = S.paidBy || '—';
-  document.getElementById('r-amount').textContent = `${S.currency} ${fmt(S.amount)}`;
-  document.getElementById('r-method').textContent = typeof ml === 'function' ? ml() : (ml || S.method);
-  document.getElementById('r-period').textContent = S.taxPeriod || '—';
-  document.getElementById('r-type').textContent   = S.taxType   || '—';
-  showPage('success');
-}
+      function onSuccess(r) {
+        const now = new Date();
+        const ml = METHOD_LABELS[S.method];
+        document.getElementById("r-no").textContent = r.receiptNumber;
+        document.getElementById("r-date").textContent = now.toLocaleDateString(
+          "en-NG",
+          { year: "numeric", month: "long", day: "numeric" },
+        );
+        document.getElementById("r-paidby").textContent = S.paidBy || "—";
+        document.getElementById("r-amount").textContent =
+          `${S.currency} ${fmt(S.amount)}`;
+        document.getElementById("r-method").textContent =
+          typeof ml === "function" ? ml() : ml || S.method;
+        document.getElementById("r-period").textContent = S.taxPeriod || "—";
+        document.getElementById("r-type").textContent = S.taxType || "—";
+        showPage("success");
+      }
 
-function onFailed(msg) {
-  document.getElementById('err-msg').textContent = msg || 'An error occurred. Please try again.';
-  showPage('failed');
-}
+      function onFailed(msg) {
+        document.getElementById("err-msg").textContent =
+          msg || "An error occurred. Please try again.";
+        showPage("failed");
+      }
 
-function tryAgain()        { showPage(S.method || 'select'); }
-function backToDashboard() { window.location.href = '/dashboard'; }
+      function tryAgain() {
+        showPage(S.method || "select");
+      }
+      function backToDashboard() {
+        window.location.href = "/dashboard";
+      }
 
-// Init
-refresh();
-</script>
-</body>
+      // Init
+      refresh();
+    </script>
+  </body>
 </html>

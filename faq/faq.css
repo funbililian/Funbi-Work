@@ -1,7 +1,9 @@
 /* =====================
    Base Reset & Variables
    ===================== */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -18,7 +20,7 @@
   --color-icon: #028a07;
   --color-answer-text: #555555;
   --color-section-heading: #026807;
-  --font-main: 'Poppins', sans-serif;
+  --font-main: "Poppins", sans-serif;
   --radius: 10px;
   --transition: 0.28s ease;
 }
@@ -41,7 +43,7 @@ body {
   margin: 0 auto;
   border-radius: var(--radius);
   padding: 2rem 1.5rem 2.5rem;
- box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 /* =====================
@@ -123,7 +125,9 @@ body {
   height: 8px;
   border-radius: 50%;
   background-color: var(--color-dot);
-  transition: background-color var(--transition), transform var(--transition);
+  transition:
+    background-color var(--transition),
+    transform var(--transition);
 }
 
 .faq-item.open .faq-dot {

@@ -4,112 +4,113 @@
 ========================= */
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
-    background-color: #f3f4f6;
-    color: #1f2937;
-    line-height: 1.6;
+  background-color: #f3f4f6;
+  color: #1f2937;
+  line-height: 1.6;
 }
 
 /* HEADER */
 header {
-    background-color: #028a07;
-    color: white;
-    padding: 20px;
-    text-align: center;
+  background-color: #028a07;
+  color: white;
+  padding: 20px;
+  text-align: center;
 }
 
 header h1 {
-    font-size: 26px;
+  font-size: 26px;
 }
 
 /* MAIN CONTAINER */
 main {
-    max-width: 1100px;
-    margin: 30px auto;
-    padding: 15px;
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 15px;
 }
 
 /* SECTION CARDS */
 section {
-    background: #ffffff;
-    margin-bottom: 18px;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    border-left: 5px solid #028a07;
-    transition: all 0.3s ease;
+  background: #ffffff;
+  margin-bottom: 18px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid #028a07;
+  transition: all 0.3s ease;
 }
 
 /* SECTION HEADINGS */
 section h2 {
-    color: #028a07;
-    margin-bottom: 10px;
-    cursor: pointer;
+  color: #028a07;
+  margin-bottom: 10px;
+  cursor: pointer;
 }
 
 /* SUB HEADINGS */
 section h3 {
-    color: #026805;
-    margin-top: 10px;
+  color: #026805;
+  margin-top: 10px;
 }
 
 /* LISTS */
-ul, ol {
-    margin-left: 20px;
-    margin-top: 8px;
+ul,
+ol {
+  margin-left: 20px;
+  margin-top: 8px;
 }
 
 li {
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 }
 
 /* FAQ BUTTON */
 .faq-btn {
-    background-color: #028a07;
-    color: white;
-    padding: 12px 18px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 15px;
-    transition: 0.3s ease;
+  background-color: #028a07;
+  color: white;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s ease;
 }
 
 .faq-btn:hover {
-    background-color: #026805;
+  background-color: #026805;
 }
 
 /* COLLAPSIBLE EFFECT */
 .collapsed {
-    max-height: 60px;
-    overflow: hidden;
+  max-height: 60px;
+  overflow: hidden;
 }
 
 /* FOOTER */
 footer {
-    text-align: center;
-    padding: 20px;
-    font-size: 14px;
-    color: #1f2937;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  color: #1f2937;
 }
 
 /* RESPONSIVE DESIGN */
 @media (max-width: 768px) {
-    main {
-        padding: 10px;
-    }
+  main {
+    padding: 10px;
+  }
 
-    section {
-        padding: 15px;
-    }
+  section {
+    padding: 15px;
+  }
 
-    header h1 {
-        font-size: 20px;
-    }
+  header h1 {
+    font-size: 20px;
+  }
 }

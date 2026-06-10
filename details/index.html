@@ -1,31 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Taxease Profile Setup</title>
-<link rel="stylesheet" href="details.css">
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taxease Profile Setup</title>
+    <link rel="stylesheet" href="details.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Complete Your Profile</h1>
 
-<div class="container">
-
-    <h1>Complete Your Profile</h1>
-
-    <form id="profileForm">
-
+      <form id="profileForm">
         <!-- Profile Type -->
 
         <div class="form-group">
-            <label>Profile Type *</label>
+          <label>Profile Type *</label>
 
-            <select id="profileType" required>
-                <option value="">Select Profile Type</option>
-                <option value="employee">Employee</option>
-                <option value="freelancer">Freelancer</option>
-                <option value="business">Business Owner</option>
-            </select>
+          <select id="profileType" required>
+            <option value="">Select Profile Type</option>
+            <option value="employee">Employee</option>
+            <option value="freelancer">Freelancer</option>
+            <option value="business">Business Owner</option>
+          </select>
         </div>
 
         <!-- Personal Information -->
@@ -33,236 +33,216 @@
         <h2>Personal Information</h2>
 
         <div class="form-group">
-            <label>Full Name *</label>
-            <input type="text" id="fullName" required>
+          <label>Full Name *</label>
+          <input type="text" id="fullName" required />
         </div>
 
         <div class="form-group">
-            <label>Email Address *</label>
-            <input type="email" id="email" required>
+          <label>Email Address *</label>
+          <input type="email" id="email" required />
         </div>
 
         <div class="form-group">
-            <label>Phone Number *</label>
-            <input type="tel" id="phone" required>
+          <label>Phone Number *</label>
+          <input type="tel" id="phone" required />
         </div>
 
         <div class="form-group">
-            <label>Residential Address *</label>
-            <input type="text" id="address" required>
+          <label>Residential Address *</label>
+          <input type="text" id="address" required />
         </div>
 
         <!-- Employee Section -->
 
         <div id="employeeFields" class="hidden">
+          <h2>Employment Information</h2>
 
-            <h2>Employment Information</h2>
+          <div class="form-group">
+            <label>Company Name *</label>
+            <input type="text" id="companyName" />
+          </div>
 
-            <div class="form-group">
-                <label>Company Name *</label>
-                <input type="text" id="companyName">
-            </div>
+          <div class="form-group">
+            <label>Job Title *</label>
+            <input type="text" id="jobTitle" />
+          </div>
 
-            <div class="form-group">
-                <label>Job Title *</label>
-                <input type="text" id="jobTitle">
-            </div>
+          <div class="form-group">
+            <label>Monthly Salary *</label>
+            <input type="number" id="salary" />
+          </div>
 
-            <div class="form-group">
-                <label>Monthly Salary *</label>
-                <input type="number" id="salary">
-            </div>
-
-            <div class="form-group">
-                <label>Pension Contribution</label>
-                <input type="number" id="pension">
-            </div>
-
+          <div class="form-group">
+            <label>Pension Contribution</label>
+            <input type="number" id="pension" />
+          </div>
         </div>
 
         <!-- Freelancer Section -->
 
         <div id="freelancerFields" class="hidden">
+          <h2>Freelancer Information</h2>
 
-            <h2>Freelancer Information</h2>
+          <div class="form-group">
+            <label>Profession *</label>
+            <input type="text" id="profession" />
+          </div>
 
-            <div class="form-group">
-                <label>Profession *</label>
-                <input type="text" id="profession">
-            </div>
+          <div class="form-group">
+            <label>Monthly Income *</label>
+            <input type="number" id="monthlyIncome" />
+          </div>
 
-            <div class="form-group">
-                <label>Monthly Income *</label>
-                <input type="number" id="monthlyIncome">
-            </div>
-
-            <div class="form-group">
-                <label>Years of Experience *</label>
-                <input type="number" id="experience">
-            </div>
-
+          <div class="form-group">
+            <label>Years of Experience *</label>
+            <input type="number" id="experience" />
+          </div>
         </div>
 
         <!-- Business Section -->
 
         <div id="businessFields" class="hidden">
+          <h2>Business Information</h2>
 
-            <h2>Business Information</h2>
+          <div class="form-group">
+            <label>Business Name *</label>
+            <input type="text" id="businessName" />
+          </div>
 
-            <div class="form-group">
-                <label>Business Name *</label>
-                <input type="text" id="businessName">
-            </div>
+          <div class="form-group">
+            <label>Business Type *</label>
+            <input type="text" id="businessType" />
+          </div>
 
-            <div class="form-group">
-                <label>Business Type *</label>
-                <input type="text" id="businessType">
-            </div>
+          <div class="form-group">
+            <label>Industry Category *</label>
+            <input type="text" id="industry" />
+          </div>
 
-            <div class="form-group">
-                <label>Industry Category *</label>
-                <input type="text" id="industry">
-            </div>
+          <div class="form-group">
+            <label>Estimated Monthly Revenue *</label>
+            <input type="number" id="revenue" />
+          </div>
 
-            <div class="form-group">
-                <label>Estimated Monthly Revenue *</label>
-                <input type="number" id="revenue">
-            </div>
-
-            <div class="form-group">
-                <label>Number of Employees</label>
-                <input type="number" id="employees">
-            </div>
-
+          <div class="form-group">
+            <label>Number of Employees</label>
+            <input type="number" id="employees" />
+          </div>
         </div>
 
-      <!-- =========================
+        <!-- =========================
 CAC REGISTRATION
 ========================= -->
 
-<h2>Business Registration Information</h2>
+        <h2>Business Registration Information</h2>
 
-<div class="form-group">
-    <label for="cacNumber">
-        CAC Registration Number *
-    </label>
+        <div class="form-group">
+          <label for="cacNumber"> CAC Registration Number * </label>
 
-    <input
-        type="text"
-        id="cacNumber"
-        name="cacNumber"
-        placeholder="e.g. RC1234567"
-        required
-    >
-</div>
+          <input
+            type="text"
+            id="cacNumber"
+            name="cacNumber"
+            placeholder="e.g. RC1234567"
+            required
+          />
+        </div>
 
-<div class="form-group">
-    <label for="businessAddress">
-        Business Address *
-    </label>
+        <div class="form-group">
+          <label for="businessAddress"> Business Address * </label>
 
-    <input
-        type="text"
-        id="businessAddress"
-        name="businessAddress"
-        placeholder="Enter business address"
-        required
-    >
-</div>
+          <input
+            type="text"
+            id="businessAddress"
+            name="businessAddress"
+            placeholder="Enter business address"
+            required
+          />
+        </div>
 
-<!-- =========================
+        <!-- =========================
 FINANCIAL INFORMATION
 ========================= -->
 
-<h2>Financial Information</h2>
+        <h2>Financial Information</h2>
 
-<div class="form-group">
-    <label for="monthlyRevenue">
-        Estimated Monthly Revenue (₦) *
-    </label>
+        <div class="form-group">
+          <label for="monthlyRevenue"> Estimated Monthly Revenue (₦) * </label>
 
-    <input
-        type="number"
-        id="monthlyRevenue"
-        name="monthlyRevenue"
-        placeholder="Enter monthly revenue"
-        min="0"
-        required
-    >
-</div>
+          <input
+            type="number"
+            id="monthlyRevenue"
+            name="monthlyRevenue"
+            placeholder="Enter monthly revenue"
+            min="0"
+            required
+          />
+        </div>
 
-<div class="form-group">
-    <label for="annualRevenue">
-        Estimated Annual Revenue (₦)
-    </label>
+        <div class="form-group">
+          <label for="annualRevenue"> Estimated Annual Revenue (₦) </label>
 
-    <input
-        type="number"
-        id="annualRevenue"
-        name="annualRevenue"
-        placeholder="Auto-calculated or enter manually"
-        min="0"
-    >
-</div>
+          <input
+            type="number"
+            id="annualRevenue"
+            name="annualRevenue"
+            placeholder="Auto-calculated or enter manually"
+            min="0"
+          />
+        </div>
 
-<div class="form-group">
-    <label for="employeeCount">
-        Number of Employees
-    </label>
+        <div class="form-group">
+          <label for="employeeCount"> Number of Employees </label>
 
-    <input
-        type="number"
-        id="employeeCount"
-        name="employeeCount"
-        placeholder="Enter number of employees"
-        min="0"
-    >
-</div>
+          <input
+            type="number"
+            id="employeeCount"
+            name="employeeCount"
+            placeholder="Enter number of employees"
+            min="0"
+          />
+        </div>
 
-<div class="form-group">
-    <label for="bankName">
-        Business Bank Name *
-    </label>
+        <div class="form-group">
+          <label for="bankName"> Business Bank Name * </label>
 
-    <input
-        type="text"
-        id="bankName"
-        name="bankName"
-        placeholder="e.g. Access Bank"
-        required
-    >
-</div>
+          <input
+            type="text"
+            id="bankName"
+            name="bankName"
+            placeholder="e.g. Access Bank"
+            required
+          />
+        </div>
 
-<div class="form-group">
-    <label for="accountNumber">
-        Business Account Number *
-    </label>
+        <div class="form-group">
+          <label for="accountNumber"> Business Account Number * </label>
 
-    <input
-        type="text"
-        id="accountNumber"
-        name="accountNumber"
-        maxlength="10"
-        placeholder="Enter 10-digit account number"
-        required
-    >
-      </div>
-      
+          <input
+            type="text"
+            id="accountNumber"
+            name="accountNumber"
+            maxlength="10"
+            placeholder="Enter 10-digit account number"
+            required
+          />
+        </div>
+
         <!-- Tax Information -->
 
         <h2>Tax Information</h2>
 
         <div class="form-group">
-            <label>TIN (Tax Identification Number) *</label>
-            <input type="text" id="tin" required>
+          <label>TIN (Tax Identification Number) *</label>
+          <input type="text" id="tin" required />
         </div>
 
         <div class="form-group">
-            <label>Registered With FIRS?</label>
-            <select id="firs">
-                <option>Yes</option>
-                <option>No</option>
-            </select>
+          <label>Registered With FIRS?</label>
+          <select id="firs">
+            <option>Yes</option>
+            <option>No</option>
+          </select>
         </div>
 
         <!-- Notifications -->
@@ -270,24 +250,19 @@ FINANCIAL INFORMATION
         <h2>Notification Preferences</h2>
 
         <label class="checkbox">
-            <input type="checkbox" checked>
-            Tax Reminders
+          <input type="checkbox" checked />
+          Tax Reminders
         </label>
 
         <label class="checkbox">
-            <input type="checkbox">
-            Monthly Reports
+          <input type="checkbox" />
+          Monthly Reports
         </label>
 
-        <button type="submit">
-            Save and Continue
-        </button>
+        <button type="submit">Save and Continue</button>
+      </form>
+    </div>
 
-    </form>
-
-</div>
-
-<script src="details.js"></script>
-
-</body>
+    <script src="details.js"></script>
+  </body>
 </html>

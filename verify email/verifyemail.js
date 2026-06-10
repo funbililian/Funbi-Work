@@ -2,25 +2,17 @@
 
 import { useState } from "react";
 
+const API_BASE = "https://tax-system-backend.onrender.com/api/auth";
+
 export default function RegisterPage() {
 
   const [email, setEmail] = useState("");
-
-  const [verificationCode, setVerificationCode] = useState("");
-
   const [userCode, setUserCode] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // GENERATE RANDOM CODE
-
-  const generateCode = () => {
-
-    return Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
-
-  };
-
+  // ==========================
   // SEND VERIFICATION CODE
+  // ==========================
 
   const sendVerificationCode = async () => {
 
@@ -29,66 +21,78 @@ export default function RegisterPage() {
       return;
     }
 
-    const code = generateCode();
-
-    setVerificationCode(code);
+    setLoading(true);
 
     try {
 
-      const response = await fetch(
-        "/api/send-verification",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            email,
-            code,
-          }),
-        }
-      );
+      const response = await fetch(`${API_BASE}/send-verification-code`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ email })
+      });
 
       const data = await response.json();
 
-      if (data.success) {
-
-        alert("Verification code sent to email");
-
-      } else {
-
-        alert(data.message);
-
+      if (!response.ok) {
+        throw new Error(data.message);
       }
 
+      alert("Verification code sent to email");
+
     } catch (error) {
-
-      alert("Something went wrong");
-
+      alert(error.message);
+    } finally {
+      setLoading(false);
     }
-
   };
 
+  // ==========================
   // VERIFY CODE
+  // ==========================
 
-  const verifyCode = () => {
+  const verifyCode = async () => {
 
-    if (userCode === verificationCode) {
-
-      alert("Email verified successfully");
-
-    } else {
-
-      alert("Invalid verification code");
-
+    if (!email || !userCode) {
+      alert("Fill all fields");
+      return;
     }
 
+    setLoading(true);
+
+    try {
+
+      const response = await fetch(`${API_BASE}/verify-email-code`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email,
+          code: userCode
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+
+      alert("Email verified successfully 🎉");
+
+      // redirect to login
+      window.location.href = "/login.html";
+
+    } catch (error) {
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-
     <section className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
 
       <div className="bg-white p-10 rounded-3xl shadow-xl w-full max-w-lg">
@@ -98,54 +102,44 @@ export default function RegisterPage() {
         </h1>
 
         {/* EMAIL */}
-
         <div className="mb-5">
-
-          <label className="block mb-2 font-semibold">
-            Email Address
-          </label>
+          <label className="block mb-2 font-semibold">Email Address</label>
 
           <input
             type="email"
-            placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-300 rounded-xl px-4 py-4"
+            className="w-full border rounded-xl px-4 py-4"
           />
-
         </div>
 
-        {/* SEND BUTTON */}
-
+        {/* SEND CODE */}
         <button
           onClick={sendVerificationCode}
+          disabled={loading}
           className="w-full bg-green-700 text-white py-4 rounded-xl mb-6"
         >
           Send Verification Code
         </button>
 
         {/* CODE INPUT */}
-
         <div className="mb-5">
-
           <label className="block mb-2 font-semibold">
             Enter Verification Code
           </label>
 
           <input
             type="text"
-            placeholder="6-digit code"
             value={userCode}
             onChange={(e) => setUserCode(e.target.value)}
-            className="w-full border border-gray-300 rounded-xl px-4 py-4"
+            className="w-full border rounded-xl px-4 py-4"
           />
-
         </div>
 
         {/* VERIFY BUTTON */}
-
         <button
           onClick={verifyCode}
+          disabled={loading}
           className="w-full bg-black text-white py-4 rounded-xl"
         >
           Verify Email
@@ -154,7 +148,5 @@ export default function RegisterPage() {
       </div>
 
     </section>
-
   );
-
 }

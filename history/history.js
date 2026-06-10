@@ -1,26 +1,43 @@
-let payments = JSON.parse(localStorage.getItem("payments")) || [];
+const API_BASE = "https://tax-system-backend.onrender.com/api";
 
-/* -----------------------------
-   ADD PAYMENT (simulate or from backend)
-------------------------------*/
-function addPayment(reference, amount, status) {
-  const payment = {
-    reference,
-    amount,
-    status, // "success" or "failed"
-    date: new Date().toLocaleString()
-  };
+let payments = [];
 
-  payments.push(payment);
-  localStorage.setItem("payments", JSON.stringify(payments));
+// ==============================
+// FETCH PAYMENTS FROM BACKEND
+// ==============================
 
-  renderPayments();
+async function loadPayments() {
+  try {
+    const res = await fetch(`${API_BASE}/payments/history`, {
+      method: "GET",
+      credentials: "include"
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to load payments");
+    }
+
+    payments = data.data || [];
+
+    renderPayments();
+
+  } catch (error) {
+    console.error("Error loading payments:", error);
+
+    // fallback empty state
+    payments = [];
+    renderPayments();
+  }
 }
 
-/* -----------------------------
-   RENDER TABLE
-------------------------------*/
+// ==============================
+// RENDER TABLE
+// ==============================
+
 function renderPayments(filter = "all") {
+
   const table = document.getElementById("historyTable");
   table.innerHTML = "";
 
@@ -30,36 +47,75 @@ function renderPayments(filter = "all") {
     filtered = payments.filter(p => p.status === filter);
   }
 
-  filtered.forEach(p => {
-    const row = `
+  if (filtered.length === 0) {
+    table.innerHTML = `
       <tr>
-        <td>${p.reference}</td>
-        <td>₦${p.amount}</td>
+        <td colspan="4" style="text-align:center;">No payments found</td>
+      </tr>
+    `;
+    return;
+  }
+
+  filtered.forEach(p => {
+
+    table.innerHTML += `
+      <tr>
+        <td>${p.reference || "N/A"}</td>
+        <td>₦${(p.amount || 0).toLocaleString()}</td>
         <td class="${p.status === "success" ? "status-success" : "status-failed"}">
-          ${p.status}
+          ${p.status || "unknown"}
         </td>
-        <td>${p.date}</td>
+        <td>${new Date(p.createdAt || p.date).toLocaleString()}</td>
       </tr>
     `;
 
-    table.innerHTML += row;
   });
 }
 
-/* -----------------------------
-   FILTER BUTTONS
-------------------------------*/
+// ==============================
+// FILTER BUTTONS
+// ==============================
+
 function filterPayments(type) {
   renderPayments(type);
 }
 
-/* -----------------------------
-   SIMULATION (for testing only)
-   You can REMOVE this later
-------------------------------*/
-addPayment("NTC-123456", 5000, "success");
-addPayment("NTC-789012", 5000, "failed");
-addPayment("NTC-555888", 5000, "success");
+// ==============================
+// OPTIONAL: CREATE PAYMENT (API VERSION)
+// ==============================
 
-/* INITIAL LOAD */
-renderPayments();
+async function addPayment(reference, amount) {
+
+  try {
+
+    const res = await fetch(`${API_BASE}/payments/create`, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        reference,
+        amount
+      })
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message);
+    }
+
+    // refresh list after creating
+    await loadPayments();
+
+  } catch (error) {
+    console.error("Payment error:", error);
+  }
+}
+
+// ==============================
+// INIT
+// ==============================
+
+loadPayments();
