@@ -35,11 +35,11 @@ profileType.addEventListener("change", toggleProfileSections);
 // ===================================
 
 batchPayrollBtn.addEventListener("click", () => {
-  window.location.href = "/payroll/index.html";
+  window.location.href = "payroll/index.html";
 });
 
 makePaymentBtn.addEventListener("click", () => {
-  window.location.href = "/payment/index.html";
+  window.location.href = "payment/index.html";
 });
 
 // ===================================
