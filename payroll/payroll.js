@@ -54,6 +54,18 @@ async function uploadPayrollFile() {
         alert(error.message);
         console.error(error);
     }
+    if (data.success) {
+
+    localStorage.setItem(
+        "batchJobId",
+        data.batchJobId
+    );
+
+    alert(
+        `Payroll uploaded successfully. ${data.totalProcessed} employees processed.`
+    );
+
+    }
 }
 
 // ===================================
