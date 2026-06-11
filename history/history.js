@@ -81,40 +81,6 @@ function filterPayments(type) {
 }
 
 // ==============================
-// OPTIONAL: CREATE PAYMENT (API VERSION)
-// ==============================
-
-async function addPayment(reference, amount) {
-
-  try {
-
-    const res = await fetch(`${API_BASE}/payments/create`, {
-      method: "POST",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        reference,
-        amount
-      })
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      throw new Error(data.message);
-    }
-
-    // refresh list after creating
-    await loadPayments();
-
-  } catch (error) {
-    console.error("Payment error:", error);
-  }
-}
-
-// ==============================
 // INIT
 // ==============================
 
