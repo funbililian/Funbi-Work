@@ -109,3 +109,79 @@ Project Goals
 
 Project Structure
 
+tax-calculator/
+│
+├── index.html                 # Landing Page
+├── index.css                  # Global styles
+├── index.js                   # Global scripts
+├── README.md
+│
+├── aboutus/
+│   ├── aboutus.html
+│   ├── aboutus.css
+│   └── aboutus.js
+│
+├── calculator/
+│   ├── calculator.html
+│   ├── calculator.css
+│   └── calculator.js
+│
+├── dashboard/
+│   ├── dashboard.html
+│   ├── dashboard.css
+│   └── dashboard.js
+│
+├── details/
+│   ├── details.html
+│   ├── details.css
+│   └── details.js
+│
+├── faq/
+│   ├── faq.html
+│   ├── faq.css
+│   └── faq.js
+│
+├── forgotpassword/
+│   ├── forgotpassword.html
+│   ├── forgotpassword.css
+│   └── forgotpassword.js
+│
+├── history/
+│   ├── history.html
+│   ├── history.css
+│   └── history.js
+│
+├── login/
+│   ├── login.html
+│   ├── login.css
+│   └── login.js
+│
+├── payment/
+│   ├── payment.html
+│   ├── payment.css
+│   └── payment.js
+│
+├── payroll/
+│   ├── payroll.html
+│   ├── payroll.css
+│   └── payroll.js
+│
+├── Profile/
+│   ├── profile.html
+│   ├── profile.css
+│   └── profile.js
+│
+├── signin/
+│   ├── signin.html
+│   ├── signin.css
+│   └── signin.js
+│
+├── userguide/
+│   ├── userguide.html
+│   ├── userguide.css
+│   └── userguide.js
+│
+└── verify-email/
+    ├── verify-email.html
+    ├── verify-email.css
+    └── verify-email.js
