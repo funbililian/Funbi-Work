@@ -73,7 +73,7 @@ registerForm.addEventListener("submit", async function (event) {
 
   try {
     const response = await fetch(
-      "https://tax-system-backend.onrender.com/api/auth/register",
+      "https://tax-system-backend.onrender.com/api/auth/sign-in",
       {
         method: "POST",
         headers: {
