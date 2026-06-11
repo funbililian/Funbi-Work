@@ -109,7 +109,7 @@ Project Goals
 
 Project Structure
 
-tax-calculator/
+TaxEase/
 │
 ├── index.html                 # Landing Page
 ├── index.css                  # Global styles
@@ -118,8 +118,7 @@ tax-calculator/
 │
 ├── aboutus/
 │   ├── aboutus.html
-│   ├── aboutus.css
-│   └── aboutus.js
+│   └── aboutus.css
 │
 ├── calculator/
 │   ├── calculator.html
@@ -157,9 +156,7 @@ tax-calculator/
 │   └── login.js
 │
 ├── payment/
-│   ├── payment.html
-│   ├── payment.css
-│   └── payment.js
+│   └── payment.html
 │
 ├── payroll/
 │   ├── payroll.html
