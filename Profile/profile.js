@@ -11,7 +11,7 @@ function selectProfile(type){
 
     if(type === "Business"){
 
-        window.location.href = "/details/index.html";
+        window.location.href = "details/index.html";
 
     }
 
