@@ -261,11 +261,11 @@ footer {
 @media (max-width: 900px) {
   .hero-wrapper {
     grid-template-columns: 1fr;
-    text-align: center;
+    text-align: right;
   }
 
   .hero-buttons {
-    justify-content: center;
+    justify-content: right;
   }
 
   .feature-grid {
