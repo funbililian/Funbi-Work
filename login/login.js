@@ -127,7 +127,7 @@ function handleGoogleResponse(response) {
       if (data.success) {
         localStorage.setItem("currentUser", JSON.stringify(data.data));
 
-        window.location.href = "/dashboard/index.html";
+        window.location.href = "../dashboard/index.html";
       } else {
         alert(data.message || "Google login failed.");
       }
