@@ -38,7 +38,7 @@ batchPayrollBtn.addEventListener("click", () => {
 });
 
 makePaymentBtn.addEventListener("click", () => {
-  window.location.href = "payment/index.html";
+  window.location.href = "../payment/index.html";
 });
 
 // ===================================
