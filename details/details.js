@@ -41,5 +41,5 @@ document.getElementById("profileForm").addEventListener("submit", function (e) {
 
   // Redirect to dashboard
 
-  window.location.href = "dashboard/index.html";
+  window.location.href = "../dashboard/index.html";
 });
