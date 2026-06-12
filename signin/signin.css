@@ -229,25 +229,87 @@ RESPONSIVE
 @media (max-width: 900px) {
   .register-container {
     grid-template-columns: 1fr;
+    max-width: 700px;
   }
 
   .register-left {
     text-align: center;
     align-items: center;
+    padding: 50px 30px;
+  }
+
+  .logo-area {
+    justify-content: center;
+  }
+
+  .side-image {
+    max-width: 300px;
   }
 }
 
 @media (max-width: 600px) {
+  .register-section {
+    padding: 20px 12px;
+  }
+
+  .register-container {
+    border-radius: 20px;
+  }
+
   .register-left,
   .register-right {
-    padding: 40px 24px;
+    padding: 35px 20px;
   }
 
   .register-left h2 {
-    font-size: 36px;
+    font-size: 32px;
+  }
+
+  .register-left p {
+    font-size: 16px;
+    line-height: 1.6;
   }
 
   form h2 {
-    font-size: 32px;
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .input-group input {
+    padding: 14px;
+    font-size: 15px;
+  }
+
+  .signin-btn,
+  .google-btn {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .logo-area h1 {
+    font-size: 26px;
+  }
+
+  .side-image {
+    max-width: 220px;
+  }
+}
+
+@media (max-width: 400px) {
+  .register-left,
+  .register-right {
+    padding: 25px 15px;
+  }
+
+  .register-left h2 {
+    font-size: 28px;
+  }
+
+  form h2 {
+    font-size: 24px;
+  }
+
+  .logo-area h1 {
+    font-size: 22px;
   }
 }
