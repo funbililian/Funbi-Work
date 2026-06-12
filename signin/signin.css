@@ -8,14 +8,13 @@ GLOBAL STYLES
   box-sizing: border-box;
 }
 
-html, body {
+body {
   font-family: "Poppins", sans-serif;
   background: #f5f7fa;
-  overflow-x: hidden;
 }
 
 /* =========================
-PAGE WRAPPER
+REGISTER SECTION 
 ========================= */
 
 .register-section {
@@ -26,10 +25,6 @@ PAGE WRAPPER
   justify-content: center;
   padding: 40px 20px;
 }
-
-/* =========================
-MAIN CONTAINER
-========================= */
 
 .register-container {
   width: 100%;
@@ -64,24 +59,30 @@ LEFT SIDE
 
 .logo-area img {
   width: 50px;
-  border-radius: 8px;
 }
 
 .logo-area h1 {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 800;
 }
 
 .register-left h2 {
-  font-size: 44px;
+  font-size: 48px;
   line-height: 1.2;
   margin-bottom: 20px;
 }
 
 .register-left p {
-  font-size: 17px;
-  line-height: 1.7;
+  font-size: 18px;
+  line-height: 1.8;
   opacity: 0.9;
+  margin-bottom: 40px;
+}
+
+.side-image{
+  width: 100%
+  max-width: 400px
+  margin-top: 20px
 }
 
 /* =========================
@@ -97,36 +98,32 @@ RIGHT SIDE
 
 form {
   width: 100%;
-  max-width: 420px;
 }
 
 form h2 {
   font-size: 34px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   color: #1f2937;
-  text-align: center;
 }
 
-/* =========================
-INPUTS
-========================= */
+/*INPUTS*/
 
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 
 .input-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   font-weight: 600;
   color: #374151;
 }
 
 .input-group input {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 15px;
   outline: none;
   transition: 0.3s ease;
@@ -134,7 +131,6 @@ INPUTS
 
 .input-group input:focus {
   border-color: #028a07;
-  box-shadow: 0 0 0 3px rgba(2, 138, 7, 0.1);
 }
 
 /* =========================
@@ -156,7 +152,8 @@ DIVIDER
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
+  margin: 28px 0;
+  position: relative
 }
 
 .divider::before,
@@ -168,8 +165,9 @@ DIVIDER
 }
 
 .divider span {
-  margin: 0 12px;
-  font-size: 13px;
+  margin: 0 16px;
+  font-size: 14px;
+  font-weight: 500
   color: #6b7280;
 }
 
@@ -207,7 +205,7 @@ LOGIN TEXT
 ========================= */
 
 .login-text {
-  margin-top: 18px;
+  margin-top: 24px;
   text-align: center;
   font-size: 14px;
   color: #6b7280;
@@ -223,53 +221,34 @@ LOGIN TEXT
 RESPONSIVE
 ========================= */
 
-/* TABLET */
-@media (max-width: 900px) {
-  .register-container {
-    grid-template-columns: 1fr;
-  }
-
-  .register-left {
-    text-align: center;
-    padding: 50px 30px;
-  }
-
-  .register-right {
-    padding: 40px 30px;
-  }
-
-  form {
-    max-width: 100%;
-  }
-}
-
 /* MOBILE */
-@media (max-width: 600px) {
-  .register-section {
-    padding: 20px 10px;
-  }
+@media(max-width:900px){
 
-  .register-left {
-    padding: 40px 20px;
-  }
-
-  .register-left h2 {
-    font-size: 32px;
-  }
-
-  .register-right {
-    padding: 30px 20px;
-  }
-
-  form h2 {
-    font-size: 26px;
-  }
-
-  .input-group input {
-    padding: 12px;
-  }
-
-  .signin-btn {
-    padding: 14px;
-  }
+.register-container{
+grid-template-columns:1fr;
 }
+
+.register-left{
+text-align:center;
+align-items:center;
+}
+
+}
+
+@media(max-width:600px){
+
+.register-left,
+.register-right{
+ padding:40px 24px
+}
+
+.register-left h2{
+font-size:36px;
+}
+
+form h2{
+font-size:32px;
+}
+
+}
+
