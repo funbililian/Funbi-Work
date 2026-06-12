@@ -117,60 +117,60 @@ TaxEase/
 ├── README.md
 │
 ├── aboutus/
-│   ├── aboutus.html
+│   ├── index.html
 │   └── aboutus.css
 │
 ├── calculator/
-│   ├── calculator.html
+│   ├── index.html
 │   ├── calculator.css
 │   └── calculator.js
 │
 ├── dashboard/
-│   ├── dashboard.html
+│   ├── index.html
 │   ├── dashboard.css
 │   └── dashboard.js
 │
 ├── details/
-│   ├── details.html
+│   ├── index.html
 │   ├── details.css
 │   └── details.js
 │
 ├── faq/
-│   ├── faq.html
+│   ├── index.html
 │   ├── faq.css
 │   └── faq.js
 │
 ├── forgotpassword/
-│   ├── forgotpassword.html
+│   ├── index.html
 │   ├── forgotpassword.css
 │   └── forgotpassword.js
 │
 ├── login/
-│   ├── login.html
+│   ├── index.html
 │   ├── login.css
 │   └── login.js
 │
 ├── payroll/
-│   ├── payroll.html
+│   ├── index.html
 │   ├── payroll.css
 │   └── payroll.js
 │
 ├── Profile/
-│   ├── profile.html
+│   ├── index.html
 │   ├── profile.css
 │   └── profile.js
 │
 ├── signin/
-│   ├── signin.html
+│   ├── index.html
 │   ├── signin.css
 │   └── signin.js
 │
 ├── userguide/
-│   ├── userguide.html
+│   ├── index.html
 │   ├── userguide.css
 │   └── userguide.js
 │
-└── verify-email/
-    ├── verify-email.html
-    ├── verify-email.css
-    └── verify-email.js
+└── verifyemail/
+    ├── index.html
+    ├── verifyemail.css
+    └── verifyemail.js
