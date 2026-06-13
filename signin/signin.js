@@ -114,7 +114,7 @@ registerForm.addEventListener("submit", async (event) => {
         passwordError.textContent = "";
       }
 
-      window.location.href = "../profile/index.html";
+      window.location.href = "../Profile/index.html";
     } else {
       alert(data.message || "Registration failed.");
     }
