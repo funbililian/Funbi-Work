@@ -49,46 +49,47 @@ function getInput(id) {
   return Number(document.getElementById(id).value || 0);
 }
 
-// ===================================
-// COLLECT DATA
-// ===================================
+// =========================
+// TAX CALCULATION BUTTON
+// =========================
 
-function collectPayload() {
-  const profile = profileType.value;
-
-  let salary = 0;
-  let revenue = 0;
-  let expenses = 0;
-
-  if (profile !== "Business Owner") {
-    salary = getInput("grossMonthlyIncome") * 12;
-  } else {
-    revenue = getInput("annualRevenue");
-    expenses = getInput("annualExpenses");
-    salary = Math.max(revenue - expenses, 0);
-  }
-
-  const deductions = {
-    pension: salary * 0.08,
-    rent: Math.min(getInput("annualRent") * 0.2, 500000),
-    nhf: getInput("nhf") * 12,
-    nhis: getInput("nhis") * 12,
-    lifeInsurance: getInput("lifeInsurance") * 12,
-    mortgageInterest: getInput("mortgageInterest") * 12,
-  };
-
-  return { salary, deductions, profile };
-}
-
-// ===================================
-// API CALL - CALCULATE TAX
-// ===================================
+const calculateBtn = document.getElementById("calculateBtn");
 
 async function calculateTax() {
   try {
-    const payload = collectPayload();
+    const profile = profileType?.value;
 
-    const res = await fetch(`${API_BASE}/calculate`, {
+    if (!profile) {
+      alert("Please select a profile type first");
+      return;
+    }
+
+    // =========================
+    // BUILD PAYLOAD (MATCH BACKEND)
+    // =========================
+    const payload = {
+      grossMonthlyIncome: getNumber("grossMonthlyIncome"),
+
+      annualRent: getNumber("annualRent"),
+
+      nhfMonthly: getNumber("nhf"),
+      nhisMonthly: getNumber("nhis"),
+      lifeInsuranceMonthly: getNumber("lifeInsurance"),
+      mortgageInterestMonthly: getNumber("mortgageInterest"),
+    };
+
+    // Basic validation
+    if (!payload.grossMonthlyIncome) {
+      alert("Gross monthly income is required");
+      return;
+    }
+
+    console.log("Sending payload:", payload);
+
+    // =========================
+    // API CALL
+    // =========================
+    const res = await fetch(`${API_BASE}/tax/calculate`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,18 +100,29 @@ async function calculateTax() {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.message || "Calculation failed");
-      
+      throw new Error(data.message || "Tax calculation failed");
     }
 
+    console.log("Result:", data.data);
+
+    // =========================
+    // SHOW RESULT
+    // =========================
     renderResults(data.data);
+
   } catch (error) {
-    alert(error.message);
-    console.error(error);
+    console.error("Calculation error:", error);
+    alert(error.message || "Something went wrong");
   }
 }
 
-calculateBtn.addEventListener("click", calculateTax);
+// =========================
+// EVENT LISTENER
+// =========================
+
+if (calculateBtn) {
+  calculateBtn.addEventListener("click", calculateTax);
+}
 
 // ===================================
 // RENDER RESULTS
