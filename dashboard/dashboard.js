@@ -1,6 +1,5 @@
 const API_BASE = "https://tax-system-backend.onrender.com/api";
 const paymentBtn = document.getElementById("paymentHistoryBtn");
-}
 
 // =============================
 // STATE
