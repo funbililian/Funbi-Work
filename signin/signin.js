@@ -39,15 +39,15 @@ registerForm.addEventListener("submit", async (event) => {
   createAccountBtn.disabled = true;
   createAccountBtn.textContent = "Creating Account...";
 
-  const firstName = document.getElementById("firstName").value.trim();
-  const lastName = document.getElementById("lastName").value.trim();
+  const firstName = document.getElementById("first_name").value.trim();
+  const lastName = document.getElementById("last_name").value.trim();
   const email = document.getElementById("email").value.trim();
 
   const password = passwordInput.value;
   const confirmPassword = confirmPasswordInput.value;
 
   // Empty check
-  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+  if (!first_name || !last_name || !email || !password || !confirmPassword) {
     alert("Please fill in all fields.");
     resetButton();
     return;
@@ -91,8 +91,8 @@ registerForm.addEventListener("submit", async (event) => {
         },
         credentials: "include",
         body: JSON.stringify({
-          firstName,
-          lastName,
+          first_name,
+          last_name,
           email,
           password,
         }),
