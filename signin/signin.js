@@ -182,7 +182,7 @@ function handleGoogleResponse(response) {
       if (data.success) {
         localStorage.setItem("currentUser", JSON.stringify(data.data));
 
-        window.location.href = "../profile/index.html";
+        window.location.href = "../Profile/index.html";
       } else {
         alert(data.message || "Google login failed.");
       }
